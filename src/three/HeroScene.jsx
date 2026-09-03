@@ -122,31 +122,40 @@ function WireframeCore() {
    SKILL LABEL
 ======================================== */
 
-function SkillLabel({
-  position,
-  skill,
-}) {
+function SkillLabel({ skill }) {
   return (
-    <group position={position}>
-      <Html
-        center
-        transform
-        distanceFactor={6}
-        zIndexRange={[10, 0]}
-      >
-        <div className="skill-icon-wrapper">
-
-          <div className="three-skill-icon">
-            {skill.icon}
-          </div>
-
-          <div className="skill-tooltip">
-            {skill.name}
-          </div>
-
+    <Html
+      center
+      transform
+      distanceFactor={6}
+      zIndexRange={[10, 0]}
+    >
+      <div className="skill-icon-wrapper">
+        <div
+          className="three-skill-icon"
+          style={{
+            color: skill.color,
+            borderColor:
+              `${skill.color}55`,
+            boxShadow:
+              `0 0 15px ${skill.color}30`,
+          }}
+        >
+          {skill.icon}
         </div>
-      </Html>
-    </group>
+
+        <div
+          className="skill-tooltip"
+          style={{
+            color: skill.color,
+            borderColor:
+              `${skill.color}55`,
+          }}
+        >
+          {skill.name}
+        </div>
+      </div>
+    </Html>
   );
 }
 
@@ -155,130 +164,186 @@ function SkillLabel({
 ======================================== */
 
 function OrbitingSkills() {
-  const orbit = useRef();
+  const innerRefs = useRef([]);
+  const outerRefs = useRef([]);
 
-  const skills = [
-    {
-      name: "React",
-      icon: <FaReact />,
-    },
-    {
-      name: "Angular",
-      icon: <FaAngular />,
-    },
-    {
-      name: "Java",
-      icon: <FaJava />,
-    },
-    {
-      name: "JavaScript",
-      icon: <SiJavascript />,
-    },
-    {
-      name: "Docker",
-      icon: <FaDocker />,
-    },
-    {
-      name: "AWS",
-      icon: <FaAws />,
-    },
-    {
-      name: "Kubernetes",
-      icon: <SiKubernetes />,
-    },
-    {
-      name: "GitHub",
-      icon: <FaGithub />,
-    },
-    {
-      name: "ASP.NET Core",
-      icon: <SiDotnet />,
-    },
-    {
-      name: "PostgreSQL",
-      icon: <SiPostgresql />,
-    },
+  const innerSkills = [
+    { name: "React", icon: <FaReact />, color: "#61DAFB" },
+    { name: "Angular", icon: <FaAngular />, color: "#DD0031" },
+    { name: "Java", icon: <FaJava />, color: "#F89820" },
+    { name: "JavaScript", icon: <SiJavascript />, color: "#F7DF1E" },
+    { name: "ASP.NET Core", icon: <SiDotnet />, color: "#512BD4" },
+    { name: "PostgreSQL", icon: <SiPostgresql />, color: "#4169E1" },
   ];
 
-  const radiusX = 3.7;
-  const radiusZ = 2.1;
+  const outerSkills = [
+    { name: "Docker", icon: <FaDocker />, color: "#2496ED" },
+    { name: "AWS", icon: <FaAws />, color: "#FF9900" },
+    { name: "Kubernetes", icon: <SiKubernetes />, color: "#326CE5" },
+    { name: "GitHub", icon: <FaGithub />, color: "#FFFFFF" },
+  ];
 
-  useFrame((state, delta) => {
-    if (!orbit.current) return;
+  // Bigger orbit
+  const innerRadiusX = 4.0;
+  const innerRadiusZ = 2.25;
 
-    orbit.current.rotation.y +=
-      delta * 0.08;
+  const outerRadiusX = 5.0;
+  const outerRadiusZ = 2.8;
+
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+
+    // INNER ORBIT
+    innerSkills.forEach((skill, index) => {
+      const item = innerRefs.current[index];
+
+      if (!item) return;
+
+      const offset =
+        (index / innerSkills.length) *
+        Math.PI *
+        2;
+
+      const angle =
+        time * 0.18 + offset;
+
+      const x =
+        Math.cos(angle) *
+        innerRadiusX;
+
+      const z =
+        Math.sin(angle) *
+        innerRadiusZ;
+
+      const y =
+        Math.sin(angle * 2) *
+        0.45;
+
+      item.position.set(
+        x,
+        y,
+        z
+      );
+    });
+
+    // OUTER ORBIT
+    outerSkills.forEach((skill, index) => {
+      const item = outerRefs.current[index];
+
+      if (!item) return;
+
+      const offset =
+        (index / outerSkills.length) *
+        Math.PI *
+        2;
+
+      // Negative = opposite direction
+      const angle =
+        -time * 0.11 + offset;
+
+      const x =
+        Math.cos(angle) *
+        outerRadiusX;
+
+      const z =
+        Math.sin(angle) *
+        outerRadiusZ;
+
+      const y =
+        Math.cos(angle * 2) *
+        0.6;
+
+      item.position.set(
+        x,
+        y,
+        z
+      );
+    });
   });
 
   return (
-    <group ref={orbit}>
-      {skills.map((skill, index) => {
-        const angle =
-          (index / skills.length) *
-          Math.PI *
-          2;
-
-        const x =
-          Math.cos(angle) *
-          radiusX;
-
-        const z =
-          Math.sin(angle) *
-          radiusZ;
-
-        const y =
-          Math.sin(angle * 2) *
-          0.45;
-
-        return (
-          <SkillLabel
+    <>
+      {/* INNER SKILLS */}
+      {innerSkills.map(
+        (skill, index) => (
+          <group
             key={skill.name}
-            position={[x, y, z]}
-            skill={skill}
-          />
-        );
-      })}
-    </group>
+            ref={(element) => {
+              innerRefs.current[index] =
+                element;
+            }}
+          >
+            <SkillLabel
+              skill={skill}
+            />
+          </group>
+        )
+      )}
+
+      {/* OUTER SKILLS */}
+      {outerSkills.map(
+        (skill, index) => (
+          <group
+            key={skill.name}
+            ref={(element) => {
+              outerRefs.current[index] =
+                element;
+            }}
+          >
+            <SkillLabel
+              skill={skill}
+            />
+          </group>
+        )
+      )}
+    </>
   );
 }
-
 /* ========================================
    VISIBLE ORBIT RINGS
 ======================================== */
 
 function OrbitRings() {
-  const orbit1 = useRef();
-  const orbit2 = useRef();
+  const innerRing = useRef();
+  const outerRing = useRef();
 
   useFrame((state, delta) => {
-    if (orbit1.current) {
-      orbit1.current.rotation.z +=
-        delta * 0.03;
+    if (innerRing.current) {
+      innerRing.current.rotation.z +=
+        delta * 0.025;
     }
 
-    if (orbit2.current) {
-      orbit2.current.rotation.z -=
-        delta * 0.02;
+    if (outerRing.current) {
+      outerRing.current.rotation.z -=
+        delta * 0.018;
     }
   });
 
   return (
-    <>
-      {/* Main cyan orbit */}
+    <group>
 
+      {/* =========================
+          INNER CYAN ORBIT
+      ========================== */}
+
+      {/* Main cyan line */}
       <mesh
-        ref={orbit1}
+        ref={innerRing}
         rotation={[
           Math.PI / 2,
           0,
           0,
         ]}
-        scale={[1, 0.58, 1]}
+        scale={[
+          1,
+          0.56,
+          1,
+        ]}
       >
         <torusGeometry
           args={[
-            3.2,
-            0.018,
+            4.0,
+            0.025,
             16,
             200,
           ]}
@@ -287,24 +352,27 @@ function OrbitRings() {
         <meshBasicMaterial
           color="#22d3ee"
           transparent
-          opacity={0.8}
+          opacity={0.95}
         />
       </mesh>
 
       {/* Cyan glow */}
-
       <mesh
         rotation={[
           Math.PI / 2,
           0,
           0,
         ]}
-        scale={[1, 0.58, 1]}
+        scale={[
+          1,
+          0.56,
+          1,
+        ]}
       >
         <torusGeometry
           args={[
-            3.2,
-            0.055,
+            4.0,
+            0.08,
             16,
             200,
           ]}
@@ -313,18 +381,86 @@ function OrbitRings() {
         <meshBasicMaterial
           color="#22d3ee"
           transparent
-          opacity={0.08}
+          opacity={0.12}
+          depthWrite={false}
         />
       </mesh>
 
-      {/* Purple orbit */}
+
+      {/* =========================
+          OUTER PURPLE ORBIT
+      ========================== */}
+
+      {/* Main purple line */}
+      <mesh
+        ref={outerRing}
+        rotation={[
+          Math.PI / 2.05,
+          0.05,
+          0.08,
+        ]}
+        scale={[
+          1,
+          0.56,
+          1,
+        ]}
+      >
+        <torusGeometry
+          args={[
+            5.0,
+            0.025,
+            16,
+            200,
+          ]}
+        />
+
+        <meshBasicMaterial
+          color="#8b5cf6"
+          transparent
+          opacity={0.85}
+        />
+      </mesh>
+
+      {/* Purple glow */}
+      <mesh
+        rotation={[
+          Math.PI / 2.05,
+          0.05,
+          0.08,
+        ]}
+        scale={[
+          1,
+          0.56,
+          1,
+        ]}
+      >
+        <torusGeometry
+          args={[
+            5.0,
+            0.09,
+            16,
+            200,
+          ]}
+        />
+
+        <meshBasicMaterial
+          color="#8b5cf6"
+          transparent
+          opacity={0.1}
+          depthWrite={false}
+        />
+      </mesh>
+
+
+      {/* =========================
+          SMALL ACCENT ORBIT
+      ========================== */}
 
       <mesh
-        ref={orbit2}
         rotation={[
-          Math.PI / 2.08,
-          0.1,
-          0.15,
+          Math.PI / 2.25,
+          0.2,
+          -0.18,
         ]}
         scale={[
           1,
@@ -334,20 +470,21 @@ function OrbitRings() {
       >
         <torusGeometry
           args={[
-            3.4,
+            4.55,
             0.012,
-            16,
-            200,
+            12,
+            180,
           ]}
         />
 
         <meshBasicMaterial
-          color="#8b5cf6"
+          color="#67e8f9"
           transparent
-          opacity={0.55}
+          opacity={0.35}
         />
       </mesh>
-    </>
+
+    </group>
   );
 }
 
