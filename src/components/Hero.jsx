@@ -4,7 +4,7 @@ import HeroScene from "../three/HeroScene";
 
 const Hero = () => {
   return (
-    <section className="hero">
+    <section id="home" className="hero">
       <div className="hero-content">
         <motion.p
           className="hero-intro"
@@ -39,9 +39,9 @@ const Hero = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.5 }}
         >
-          I build modern web applications, backend systems and cloud-ready
+          I build modern web applications, backend systems, and cloud-ready
           solutions using technologies such as React, Angular, C#, Java,
-          Docker, AWS and Kubernetes.
+          Docker, AWS, and Kubernetes.
         </motion.p>
 
         <motion.div
@@ -59,15 +59,30 @@ const Hero = () => {
           </a>
         </motion.div>
 
-        <div className="social-links">
-          <a href="#" aria-label="GitHub">
+        <motion.div
+          className="social-links"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.9 }}
+        >
+          <a
+            href="https://github.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+          >
             <FaGithub />
           </a>
 
-          <a href="#" aria-label="LinkedIn">
+          <a
+            href="https://www.linkedin.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+          >
             <FaLinkedin />
           </a>
-        </div>
+        </motion.div>
       </div>
 
       <div className="hero-3d">
