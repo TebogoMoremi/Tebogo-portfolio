@@ -10,6 +10,7 @@ const sections = [
   "skills",
   "projects",
   "devops",
+  "experience",
   "contact",
 ];
 
@@ -78,6 +79,7 @@ const Navbar = () => {
     ["skills", "Skills"],
     ["projects", "Projects"],
     ["devops", "DevOps Lab"],
+    ["experience", "Experience"],
     ["contact", "Contact"],
   ];
 
