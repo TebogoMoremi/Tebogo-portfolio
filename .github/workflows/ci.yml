@@ -18,38 +18,30 @@ jobs:
     name: Build and Publish Portfolio
     runs-on: ubuntu-latest
 
-    # Permissions required for repository access and AWS OIDC
     permissions:
       contents: read
       packages: write
       id-token: write
 
     steps:
-
-      # 1. Checkout source code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
-      # 3. Install project dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4. Build React/Vite application
       - name: Build React application
         run: npm run build
 
-      # 5. Setup Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 6. Test Docker build for Pull Requests
       - name: Test Docker build
         if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
@@ -58,7 +50,36 @@ jobs:
           push: false
           tags: tebogo-portfolio:test
 
-      # 7. Authenticate GitHub Actions with AWS using OIDC
+      - name: Show GitHub OIDC claims
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          RESPONSE=$(curl -sS \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com")
+
+          TOKEN=$(echo "$RESPONSE" | python -c "import sys,json; print(json.load(sys.stdin)['value'])")
+
+          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2)
+
+          python - "$PAYLOAD" <<'PY'
+          import sys
+          import json
+          import base64
+
+          payload = sys.argv[1]
+          payload += "=" * (-len(payload) % 4)
+
+          data = json.loads(base64.urlsafe_b64decode(payload))
+
+          print("aud =", data.get("aud"))
+          print("sub =", data.get("sub"))
+          print("repository =", data.get("repository"))
+          print("repository_id =", data.get("repository_id"))
+          print("repository_owner =", data.get("repository_owner"))
+          print("repository_owner_id =", data.get("repository_owner_id"))
+          PY
+
       - name: Configure AWS credentials
         if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v5
@@ -66,13 +87,11 @@ jobs:
           role-to-assume: arn:aws:iam::263953131930:role/GitHubActionsTebogoPortfolioRole
           aws-region: ${{ env.AWS_REGION }}
 
-      # 8. Login to Amazon ECR
       - name: Login to Amazon ECR
         if: github.event_name == 'push'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # 9. Build Docker image and push it to Amazon ECR
       - name: Build and push image to Amazon ECR
         if: github.event_name == 'push'
         uses: docker/build-push-action@v6
