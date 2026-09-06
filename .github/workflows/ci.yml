@@ -10,7 +10,8 @@ on:
       - main
 
 env:
-  REGISTRY: ghcr.io
+  AWS_REGION: af-south-1
+  ECR_REPOSITORY: tebogo-portfolio
 
 jobs:
   build:
@@ -20,6 +21,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -37,25 +39,11 @@ jobs:
       - name: Build React application
         run: npm run build
 
-      - name: Prepare image name
-        id: image
-        shell: bash
-        run: |
-          IMAGE_NAME="${GITHUB_REPOSITORY,,}"
-          echo "name=$IMAGE_NAME" >> "$GITHUB_OUTPUT"
-
-      - name: Log in to GitHub Container Registry
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      # Test Docker build on pull requests
+      - name: Test Docker build
         if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
         with:
@@ -63,12 +51,27 @@ jobs:
           push: false
           tags: tebogo-portfolio:test
 
-      - name: Build and push Docker image
-        if: github.event_name != 'pull_request'
+      # AWS authentication using OIDC
+      - name: Configure AWS credentials
+        if: github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: arn:aws:iam::263953131930:role/GitHubActionsTebogoPortfolioRole
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Login to Amazon ECR
+      - name: Login to Amazon ECR
+        if: github.event_name == 'push'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Build and push Docker image to ECR
+      - name: Build and push image to Amazon ECR
+        if: github.event_name == 'push'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:latest
-            ${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
