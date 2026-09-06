@@ -50,36 +50,6 @@ jobs:
           push: false
           tags: tebogo-portfolio:test
 
-      - name: Show GitHub OIDC claims
-        if: github.event_name == 'push'
-        shell: bash
-        run: |
-          RESPONSE=$(curl -sS \
-            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com")
-
-          TOKEN=$(echo "$RESPONSE" | python -c "import sys,json; print(json.load(sys.stdin)['value'])")
-
-          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2)
-
-          python - "$PAYLOAD" <<'PY'
-          import sys
-          import json
-          import base64
-
-          payload = sys.argv[1]
-          payload += "=" * (-len(payload) % 4)
-
-          data = json.loads(base64.urlsafe_b64decode(payload))
-
-          print("aud =", data.get("aud"))
-          print("sub =", data.get("sub"))
-          print("repository =", data.get("repository"))
-          print("repository_id =", data.get("repository_id"))
-          print("repository_owner =", data.get("repository_owner"))
-          print("repository_owner_id =", data.get("repository_owner_id"))
-          PY
-
       - name: Configure AWS credentials
         if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v5
