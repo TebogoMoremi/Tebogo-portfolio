@@ -18,31 +18,38 @@ jobs:
     name: Build and Publish Portfolio
     runs-on: ubuntu-latest
 
+    # Permissions required for repository access and AWS OIDC
     permissions:
       contents: read
       packages: write
       id-token: write
 
     steps:
+
+      # 1. Checkout source code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
+      # 3. Install project dependencies
       - name: Install dependencies
         run: npm ci
 
+      # 4. Build React/Vite application
       - name: Build React application
         run: npm run build
 
+      # 5. Setup Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Test Docker build on pull requests
+      # 6. Test Docker build for Pull Requests
       - name: Test Docker build
         if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
@@ -51,7 +58,7 @@ jobs:
           push: false
           tags: tebogo-portfolio:test
 
-      # AWS authentication using OIDC
+      # 7. Authenticate GitHub Actions with AWS using OIDC
       - name: Configure AWS credentials
         if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v5
@@ -59,13 +66,13 @@ jobs:
           role-to-assume: arn:aws:iam::263953131930:role/GitHubActionsTebogoPortfolioRole
           aws-region: ${{ env.AWS_REGION }}
 
-      # Login to Amazon ECR
+      # 8. Login to Amazon ECR
       - name: Login to Amazon ECR
         if: github.event_name == 'push'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Build and push Docker image to ECR
+      # 9. Build Docker image and push it to Amazon ECR
       - name: Build and push image to Amazon ECR
         if: github.event_name == 'push'
         uses: docker/build-push-action@v6
