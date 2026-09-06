@@ -8,9 +8,9 @@ const sections = [
   "home",
   "about",
   "skills",
+  "experience",
   "projects",
   "devops",
-  "experience",
   "contact",
 ];
 
