@@ -12,15 +12,16 @@ on:
 env:
   AWS_REGION: af-south-1
   ECR_REPOSITORY: tebogo-portfolio
+  ECS_CLUSTER: tebogo-portfolio-cluster
+  ECS_SERVICE: tebogo-portfolio-task-service-oge7l6q7
 
 jobs:
-  build:
-    name: Build and Publish Portfolio
+  build-and-deploy:
+    name: Build and Deploy Portfolio
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
-      packages: write
       id-token: write
 
     steps:
@@ -39,35 +40,58 @@ jobs:
       - name: Build React application
         run: npm run build
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Test Docker build
-        if: github.event_name == 'pull_request'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: false
-          tags: tebogo-portfolio:test
-
+      # AWS authentication using GitHub OIDC
       - name: Configure AWS credentials
         if: github.event_name == 'push'
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::263953131930:role/GitHubActionsTebogoPortfolioRole
           aws-region: ${{ env.AWS_REGION }}
 
+      # Login to Amazon ECR
       - name: Login to Amazon ECR
         if: github.event_name == 'push'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and push image to Amazon ECR
+      # Build Docker image for pull requests only
+      - name: Build Docker image
+        if: github.event_name == 'pull_request'
+        run: docker build -t tebogo-portfolio:test .
+
+      # Build and push image to ECR
+      - name: Build and push Docker image to ECR
         if: github.event_name == 'push'
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+            .
+
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      # Tell ECS to replace the current task.
+      # The new task pulls the newly pushed latest image from ECR.
+      - name: Deploy new image to ECS
+        if: github.event_name == 'push'
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment \
+            --region "$AWS_REGION"
+
+      # Wait until the new ECS deployment is stable
+      - name: Wait for ECS deployment
+        if: github.event_name == 'push'
+        run: |
+          aws ecs wait services-stable \
+            --cluster "$ECS_CLUSTER" \
+            --services "$ECS_SERVICE" \
+            --region "$AWS_REGION"
+
+          echo "Portfolio deployed successfully to AWS ECS!"
