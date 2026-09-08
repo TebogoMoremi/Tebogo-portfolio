@@ -12,8 +12,6 @@ on:
 env:
   AWS_REGION: af-south-1
   ECR_REPOSITORY: tebogo-portfolio
-  ECS_CLUSTER: tebogo-portfolio-cluster
-  ECS_SERVICE: tebogo-portfolio-task-service-oge7l6q7
   S3_BUCKET: tebogo-moremi-portfolio-2026
   CLOUDFRONT_DISTRIBUTION_ID: E1RM5JSS43QQ59
 
@@ -27,22 +25,37 @@ jobs:
       id-token: write
 
     steps:
+      # ----------------------------------------
+      # Checkout
+      # ----------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ----------------------------------------
+      # Node.js
+      # ----------------------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
+      # ----------------------------------------
+      # Install dependencies
+      # ----------------------------------------
       - name: Install dependencies
         run: npm ci
 
+      # ----------------------------------------
+      # Build React / Vite application
+      # ----------------------------------------
       - name: Build React application
         run: npm run build
 
+      # ----------------------------------------
       # AWS authentication using GitHub OIDC
+      # Only required for pushes to main
+      # ----------------------------------------
       - name: Configure AWS credentials
         if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v4
@@ -50,18 +63,26 @@ jobs:
           role-to-assume: arn:aws:iam::263953131930:role/GitHubActionsTebogoPortfolioRole
           aws-region: ${{ env.AWS_REGION }}
 
+      # ----------------------------------------
+      # Docker validation for Pull Requests
+      # ----------------------------------------
+      - name: Build Docker image
+        if: github.event_name == 'pull_request'
+        run: docker build -t tebogo-portfolio:test .
+
+      # ----------------------------------------
       # Login to Amazon ECR
+      # ----------------------------------------
       - name: Login to Amazon ECR
         if: github.event_name == 'push'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Build Docker image for pull requests only
-      - name: Build Docker image
-        if: github.event_name == 'pull_request'
-        run: docker build -t tebogo-portfolio:test .
-
-      # Build and push image to ECR
+      # ----------------------------------------
+      # Build and push Docker image to ECR
+      # Keeps Docker/ECR in the DevOps pipeline
+      # without running ECS/Fargate continuously
+      # ----------------------------------------
       - name: Build and push Docker image to ECR
         if: github.event_name == 'push'
         env:
@@ -76,13 +97,17 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      # Deploy static Vite build to S3
+      # ----------------------------------------
+      # Deploy Vite production build to S3
+      # ----------------------------------------
       - name: Deploy portfolio to S3
         if: github.event_name == 'push'
         run: |
           aws s3 sync dist/ s3://$S3_BUCKET --delete
 
-      # Clear CloudFront cache so visitors get the newest files
+      # ----------------------------------------
+      # Invalidate CloudFront cache
+      # ----------------------------------------
       - name: Invalidate CloudFront cache
         if: github.event_name == 'push'
         run: |
@@ -90,35 +115,18 @@ jobs:
             --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
             --paths "/*"
 
-      # Tell ECS to replace the current task
-      - name: Deploy new image to ECS
-        if: github.event_name == 'push'
-        run: |
-          aws ecs update-service \
-            --cluster "$ECS_CLUSTER" \
-            --service "$ECS_SERVICE" \
-            --force-new-deployment \
-            --region "$AWS_REGION"
-
-      # Wait until the new ECS deployment is stable
-      - name: Wait for ECS deployment
-        if: github.event_name == 'push'
-        run: |
-          aws ecs wait services-stable \
-            --cluster "$ECS_CLUSTER" \
-            --services "$ECS_SERVICE" \
-            --region "$AWS_REGION"
-
-          echo "Portfolio deployed successfully to AWS ECS!"
-
+      # ----------------------------------------
+      # Deployment summary
+      # ----------------------------------------
       - name: Deployment summary
         if: github.event_name == 'push'
         run: |
           echo "=========================================="
           echo "Portfolio deployment completed!"
           echo "=========================================="
+          echo "Production hosting: S3 + CloudFront"
           echo "S3 Bucket: $S3_BUCKET"
           echo "CloudFront Distribution: $CLOUDFRONT_DISTRIBUTION_ID"
-          echo "ECS Cluster: $ECS_CLUSTER"
-          echo "ECS Service: $ECS_SERVICE"
+          echo "Docker image pushed to Amazon ECR"
+          echo "ECS/Fargate production deployment: Disabled"
           echo "=========================================="
