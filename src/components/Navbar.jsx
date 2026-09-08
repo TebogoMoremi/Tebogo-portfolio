@@ -7,8 +7,8 @@ import { FaBars, FaTimes } from "react-icons/fa";
 const sections = [
   "home",
   "about",
-  "skills",
   "experience",
+  "skills",
   "projects",
   "devops",
   "contact",
@@ -25,16 +25,22 @@ const Navbar = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
+      // Show navbar at top
       if (currentScrollY < 80) {
         setVisible(true);
-      } else if (currentScrollY < lastScrollY.current) {
+      }
+      // Show navbar when scrolling up
+      else if (currentScrollY < lastScrollY.current) {
         setVisible(true);
-      } else if (!menuOpen) {
+      }
+      // Hide navbar when scrolling down
+      else if (!menuOpen) {
         setVisible(false);
       }
 
       lastScrollY.current = currentScrollY;
 
+      // Detect active section
       const scrollPosition = currentScrollY + 180;
 
       for (const sectionId of sections) {
@@ -76,10 +82,10 @@ const Navbar = () => {
   const navItems = [
     ["home", "Home"],
     ["about", "About"],
+    ["experience", "Experience"],
     ["skills", "Skills"],
     ["projects", "Projects"],
     ["devops", "DevOps Lab"],
-    ["experience", "Experience"],
     ["contact", "Contact"],
   ];
 

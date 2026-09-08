@@ -1,28 +1,52 @@
 import { motion } from "framer-motion";
+
 import {
   FaCloud,
   FaLaptopCode,
   FaTools,
+  FaCode,
 } from "react-icons/fa";
 
 const experiences = [
   {
     role: "Junior DevOps Engineer",
-    company: "Duranki",
-    type: "Freelance",
+    company: "CherryOlive",
+    type: "Professional Experience",
     period: "2026 - Present",
     icon: <FaCloud />,
     description:
-      "Supporting software delivery and DevOps activities while building practical experience with containers, cloud technologies, automation, deployments, and application troubleshooting.",
+      "Supporting software development, system integration, troubleshooting, and DevOps activities while working with cloud infrastructure, containerization, CI/CD, APIs, and enterprise integration technologies.",
     skills: [
-      "Docker",
-      "Linux",
-      "Git",
-      "CI/CD",
       "AWS",
+      "Docker",
       "Kubernetes",
+      "CI/CD",
+      "Java",
+      "Talend",
+      "SoapUI",
+      "Git",
     ],
   },
+
+ {
+  role: "Web Developer",
+  company: "Umuzi.org",
+  type: "Learnership / Development Experience",
+  period: "2023 - 2024",
+  icon: <FaCode />,
+  description:
+    "Built practical web development experience through hands-on projects focused on frontend and backend development, APIs, databases, automated testing, Git workflows, and software development fundamentals.",
+  skills: [
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "Node.js",
+    "React",
+    "PostgreSQL",
+    "Git",
+    "Jest",
+  ],
+},
 
   {
     role: "Software Developer",
@@ -31,7 +55,7 @@ const experiences = [
     period: "Ongoing",
     icon: <FaLaptopCode />,
     description:
-      "Designing and developing frontend, backend, integration, and cloud-ready applications using modern development practices.",
+      "Designing and developing frontend, backend, integration, and cloud-ready applications while applying modern software engineering and DevOps practices.",
     skills: [
       "React",
       "Java",
@@ -39,22 +63,25 @@ const experiences = [
       "ASP.NET Core",
       "Node.js",
       "PostgreSQL",
+      "REST APIs",
+      "Docker",
     ],
   },
 
   {
     role: "IT Support / Technical Support",
     company: "Technical Support Experience",
-    type: "Support",
+    type: "Support Experience",
     period: "Previous Experience",
     icon: <FaTools />,
     description:
-      "Provided technical support, troubleshooting, user assistance, system setup, and issue investigation while developing a strong foundation in IT operations.",
+      "Provided technical support, troubleshooting, user assistance, system setup, and issue investigation while developing a strong foundation in IT operations and problem solving.",
     skills: [
       "Troubleshooting",
       "Windows",
       "Networking",
       "Technical Support",
+      "System Support",
       "Problem Solving",
     ],
   },
@@ -66,7 +93,23 @@ const Experience = () => {
       id="experience"
       className="experience-section"
     >
-      <div className="section-heading">
+      <motion.div
+        className="section-heading"
+        initial={{
+          opacity: 0,
+          y: 30,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+        }}
+        viewport={{
+          once: true,
+        }}
+        transition={{
+          duration: 0.6,
+        }}
+      >
         <p className="section-label">
           Career Journey
         </p>
@@ -77,17 +120,17 @@ const Experience = () => {
 
         <p className="experience-intro">
           My experience combines software development,
-          technical support, system integration, and an
-          increasing focus on DevOps and cloud engineering.
+          web development, technical support, enterprise
+          integration, DevOps, and cloud engineering.
         </p>
-      </div>
+      </motion.div>
 
       <div className="experience-timeline">
         {experiences.map(
           (experience, index) => (
             <motion.article
               className="experience-card"
-              key={`${experience.role}-${index}`}
+              key={`${experience.company}-${experience.role}`}
               initial={{
                 opacity: 0,
                 y: 40,

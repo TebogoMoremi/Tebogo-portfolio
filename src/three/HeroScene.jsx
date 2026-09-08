@@ -675,13 +675,14 @@ export default function HeroScene() {
         }
       />
 
-      <OrbitRings />
-
-      <OrbitParticles />
-
-      <WireframeCore />
-
-      <OrbitingSkills />
+      {/* Main visual sits to the right on desktop so the hero text stays readable.
+          Keep it centered on mobile. */}
+      <group position={isMobile ? [0, 0, 0] : [3.8, 0, 0]}>
+        <OrbitRings />
+        <OrbitParticles />
+        <WireframeCore />
+        <OrbitingSkills />
+      </group>
 
       {!isMobile && (
         <CameraMovement />
