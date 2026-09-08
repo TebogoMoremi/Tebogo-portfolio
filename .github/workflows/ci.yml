@@ -14,6 +14,8 @@ env:
   ECR_REPOSITORY: tebogo-portfolio
   ECS_CLUSTER: tebogo-portfolio-cluster
   ECS_SERVICE: tebogo-portfolio-task-service-oge7l6q7
+  S3_BUCKET: tebogo-moremi-portfolio-2026
+  CLOUDFRONT_DISTRIBUTION_ID: E1RM5JSS43QQ59
 
 jobs:
   build-and-deploy:
@@ -74,8 +76,21 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      # Tell ECS to replace the current task.
-      # The new task pulls the newly pushed latest image from ECR.
+      # Deploy static Vite build to S3
+      - name: Deploy portfolio to S3
+        if: github.event_name == 'push'
+        run: |
+          aws s3 sync dist/ s3://$S3_BUCKET --delete
+
+      # Clear CloudFront cache so visitors get the newest files
+      - name: Invalidate CloudFront cache
+        if: github.event_name == 'push'
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/*"
+
+      # Tell ECS to replace the current task
       - name: Deploy new image to ECS
         if: github.event_name == 'push'
         run: |
@@ -95,3 +110,15 @@ jobs:
             --region "$AWS_REGION"
 
           echo "Portfolio deployed successfully to AWS ECS!"
+
+      - name: Deployment summary
+        if: github.event_name == 'push'
+        run: |
+          echo "=========================================="
+          echo "Portfolio deployment completed!"
+          echo "=========================================="
+          echo "S3 Bucket: $S3_BUCKET"
+          echo "CloudFront Distribution: $CLOUDFRONT_DISTRIBUTION_ID"
+          echo "ECS Cluster: $ECS_CLUSTER"
+          echo "ECS Service: $ECS_SERVICE"
+          echo "=========================================="
