@@ -102,7 +102,7 @@ function WireframeCore() {
     >
       <mesh ref={core}>
         <icosahedronGeometry
-          args={[2, 2]}
+          args={[1.55, 2]}
         />
 
         <meshStandardMaterial
@@ -184,11 +184,11 @@ function OrbitingSkills() {
   ];
 
   // Bigger orbit
-  const innerRadiusX = 4.0;
-  const innerRadiusZ = 2.25;
+ const innerRadiusX = 3.2;
+const innerRadiusZ = 1.8;
 
-  const outerRadiusX = 5.0;
-  const outerRadiusZ = 2.8;
+const outerRadiusX = 4.0;
+const outerRadiusZ = 2.25;
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
@@ -677,7 +677,7 @@ export default function HeroScene() {
 
       {/* Main visual sits to the right on desktop so the hero text stays readable.
           Keep it centered on mobile. */}
-      <group position={isMobile ? [0, 0, 0] : [3.8, 0, 0]}>
+      <group position={isMobile ? [0, 0, 0] : [3.5, 0, 0]}>
         <OrbitRings />
         <OrbitParticles />
         <WireframeCore />
