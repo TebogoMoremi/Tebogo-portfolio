@@ -442,133 +442,6 @@ a {
   color: #4ade80;
 }
 
-/* PIPELINE */
-
-.pipeline {
-  display: flex;
-
-  align-items: center;
-
-  margin: 24px 0;
-
-  gap: 8px;
-}
-
-.pipeline span {
-  padding: 5px 8px;
-
-  background:
-    rgba(124, 58, 237, 0.15);
-
-  border:
-    1px solid
-    rgba(139, 92, 246, 0.5);
-
-  border-radius: 4px;
-
-  font-size: 10px;
-
-  color: #c4b5fd;
-
-  white-space: nowrap;
-}
-
-.pipeline-line {
-  width: 45px;
-
-  height: 2px;
-
-  background: #1e293b;
-
-  overflow: hidden;
-}
-
-.pipeline-progress {
-  width: 100%;
-
-  height: 100%;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      #22d3ee,
-      transparent
-    );
-
-  transform: translateX(-100%);
-
-  animation:
-    pipelineMove 2s
-    infinite;
-}
-
-.delay-1 {
-  animation-delay: 0.5s;
-}
-
-.delay-2 {
-  animation-delay: 1s;
-}
-
-@keyframes pipelineMove {
-  0% {
-    transform:
-      translateX(-100%);
-  }
-
-  100% {
-    transform:
-      translateX(100%);
-  }
-}
-
-.deploy-command {
-  color: #f8fafc;
-}
-
-.deploy-success {
-  color: #4ade80;
-
-  animation:
-    successGlow 2s
-    infinite;
-}
-
-@keyframes successGlow {
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-
-  50% {
-    opacity: 1;
-
-    text-shadow:
-      0 0 10px
-      rgba(74, 222, 128, 0.5);
-  }
-}
-
-.terminal-cursor {
-  color: #22d3ee;
-
-  animation:
-    blinkCursor 0.8s
-    infinite;
-}
-
-@keyframes blinkCursor {
-  0%,
-  49% {
-    opacity: 1;
-  }
-
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
 /* ==========================
    HERO LAPTOP VISUAL
 ========================== */
@@ -1310,29 +1183,19 @@ a {
   line-height: 1.8;
 }
 
-
-/* ========================================
-   ARCHITECTURE CARD
-======================================== */
-
 .devops-architecture {
   max-width: 1200px;
   margin: 55px auto 70px;
   padding: 32px;
-
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.015)
-    );
-
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.045),
+    rgba(255, 255, 255, 0.015)
+  );
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -1349,7 +1212,6 @@ a {
 .architecture-label {
   display: block;
   margin-bottom: 8px;
-
   color: #22d3ee;
   font-size: 0.72rem;
   font-weight: 700;
@@ -1367,14 +1229,10 @@ a {
   display: flex;
   align-items: center;
   gap: 9px;
-
   padding: 8px 14px;
-
   border: 1px solid rgba(34, 197, 94, 0.25);
   border-radius: 999px;
-
   background: rgba(34, 197, 94, 0.08);
-
   color: #86efac;
   font-size: 0.72rem;
   font-weight: 700;
@@ -1385,13 +1243,10 @@ a {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-
   background: #22c55e;
-
   box-shadow:
     0 0 8px rgba(34, 197, 94, 0.8),
     0 0 16px rgba(34, 197, 94, 0.35);
-
   animation: devopsPulse 2s infinite;
 }
 
@@ -1408,44 +1263,31 @@ a {
   }
 }
 
-
-/* ========================================
-   ARCHITECTURE FLOW
-======================================== */
-
 .architecture-flow {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
-
   padding: 25px 10px;
 }
 
 .architecture-node {
   min-width: 105px;
   min-height: 100px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
-
   padding: 18px;
-
   border: 1px solid rgba(34, 211, 238, 0.12);
   border-radius: 18px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(34, 211, 238, 0.07),
-      rgba(139, 92, 246, 0.025)
-    );
-
+  background: linear-gradient(
+    145deg,
+    rgba(34, 211, 238, 0.07),
+    rgba(139, 92, 246, 0.025)
+  );
   color: rgba(255, 255, 255, 0.85);
-
   transition:
     transform 0.3s ease,
     border-color 0.3s ease,
@@ -1464,9 +1306,7 @@ a {
 
 .architecture-node:hover {
   transform: translateY(-5px);
-
   border-color: rgba(34, 211, 238, 0.45);
-
   box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.25),
     0 0 25px rgba(34, 211, 238, 0.08);
@@ -1482,15 +1322,11 @@ a {
   display: flex;
   align-items: center;
   gap: 14px;
-
   margin-top: 25px;
   padding: 16px 18px;
-
   border: 1px solid rgba(37, 150, 237, 0.15);
   border-radius: 14px;
-
   background: rgba(37, 150, 237, 0.05);
-
   color: rgba(255, 255, 255, 0.65);
   font-size: 0.88rem;
   line-height: 1.6;
@@ -1502,38 +1338,26 @@ a {
   font-size: 1.7rem;
 }
 
-
-/* ========================================
-   PIPELINE
-======================================== */
-
 .pipeline {
   position: relative;
-
-  max-width: 1100px;
-  margin: 0 auto;
-
+  max-width: 1200px;
+  margin: 70px auto 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
 }
 
 .pipeline-step {
   position: relative;
-
-  min-height: 230px;
-  padding: 28px;
-
+  min-height: 260px;
+  padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 20px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.012)
-    );
-
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.012)
+  );
   transition:
     transform 0.3s ease,
     border-color 0.3s ease,
@@ -1542,9 +1366,7 @@ a {
 
 .pipeline-step:hover {
   transform: translateY(-7px);
-
   border-color: rgba(34, 211, 238, 0.28);
-
   box-shadow:
     0 18px 45px rgba(0, 0, 0, 0.25),
     0 0 30px rgba(34, 211, 238, 0.05);
@@ -1553,55 +1375,49 @@ a {
 .pipeline-icon {
   width: 52px;
   height: 52px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  margin-bottom: 24px;
-
+  margin-bottom: 22px;
   border: 1px solid rgba(34, 211, 238, 0.2);
   border-radius: 15px;
-
   background: rgba(34, 211, 238, 0.07);
-
   color: #22d3ee;
   font-size: 1.55rem;
 }
 
 .pipeline-content > span {
-  display: block;
-  margin-bottom: 8px;
-
-  color: rgba(34, 211, 238, 0.7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  margin-bottom: 12px;
+  padding: 5px 8px;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 6px;
+  background: rgba(124, 58, 237, 0.12);
+  color: #c4b5fd;
   font-family: monospace;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
 .pipeline-content h3 {
-  margin: 0 0 10px;
-
+  margin: 0 0 12px;
   color: #ffffff;
   font-size: 1.08rem;
 }
 
 .pipeline-content p {
   margin: 0;
-
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.9rem;
   line-height: 1.7;
 }
 
 .pipeline-line {
   display: none;
 }
-
-
-/* ========================================
-   IMPLEMENTATION / ACHIEVEMENTS
-======================================== */
 
 .devops-implementation {
   max-width: 1100px;
@@ -1618,27 +1434,22 @@ a {
 
 .devops-subheading h3 {
   margin: 0;
-
   color: #ffffff;
   font-size: clamp(1.5rem, 2vw, 2rem);
 }
 
 .devops-achievements {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
 }
 
 .devops-achievement-card {
   position: relative;
-
   padding: 28px;
-
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 18px;
-
   background: rgba(255, 255, 255, 0.025);
-
   transition:
     transform 0.3s ease,
     border-color 0.3s ease;
@@ -1646,14 +1457,12 @@ a {
 
 .devops-achievement-card:hover {
   transform: translateY(-5px);
-
   border-color: rgba(139, 92, 246, 0.3);
 }
 
 .achievement-number {
   display: block;
   margin-bottom: 18px;
-
   color: rgba(139, 92, 246, 0.8);
   font-family: monospace;
   font-size: 0.8rem;
@@ -1662,48 +1471,35 @@ a {
 
 .devops-achievement-card h4 {
   margin: 0 0 10px;
-
   color: #ffffff;
   font-size: 1rem;
 }
 
 .devops-achievement-card p {
   margin: 0;
-
   color: rgba(255, 255, 255, 0.55);
   font-size: 0.87rem;
   line-height: 1.7;
 }
 
-
-/* ========================================
-   DEVOPS TECHNOLOGY STACK
-======================================== */
-
 .devops-stack {
   max-width: 1100px;
-
   margin: 55px auto 0;
   padding: 25px 28px;
-
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 18px;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(34, 211, 238, 0.035),
-      rgba(139, 92, 246, 0.035)
-    );
+  background: linear-gradient(
+    90deg,
+    rgba(34, 211, 238, 0.035),
+    rgba(139, 92, 246, 0.035)
+  );
 }
 
 .devops-stack-title {
   display: flex;
   align-items: center;
   gap: 10px;
-
   margin-bottom: 20px;
-
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   font-weight: 600;
@@ -1722,15 +1518,11 @@ a {
 
 .devops-tech {
   padding: 8px 13px;
-
   border: 1px solid rgba(34, 211, 238, 0.12);
   border-radius: 999px;
-
   background: rgba(34, 211, 238, 0.04);
-
   color: rgba(255, 255, 255, 0.65);
   font-size: 0.76rem;
-
   transition:
     border-color 0.25s ease,
     color 0.25s ease,
@@ -1742,11 +1534,6 @@ a {
   border-color: rgba(34, 211, 238, 0.4);
   background: rgba(34, 211, 238, 0.08);
 }
-
-
-/* ========================================
-   TABLET
-======================================== */
 
 @media (max-width: 1000px) {
   .devops-section {
@@ -1766,14 +1553,9 @@ a {
   }
 
   .pipeline {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-
-
-/* ========================================
-   MOBILE
-======================================== */
 
 @media (max-width: 700px) {
   .devops-section {
@@ -1793,7 +1575,7 @@ a {
 
   .architecture-flow {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     padding: 10px 0;
   }
@@ -1810,6 +1592,7 @@ a {
 
   .pipeline {
     grid-template-columns: 1fr;
+    margin-top: 50px;
   }
 
   .pipeline-step {
@@ -1824,11 +1607,6 @@ a {
     padding: 22px 18px;
   }
 }
-
-
-/* ========================================
-   SMALL MOBILE
-======================================== */
 
 @media (max-width: 420px) {
   .architecture-flow {
@@ -1848,190 +1626,6 @@ a {
   }
 }
 
-.devops-intro {
-  max-width: 650px;
-
-  margin-top: 20px;
-
-  color: #94a3b8;
-
-  line-height: 1.8;
-
-  font-size: 0.95rem;
-}
-
-.pipeline {
-  position: relative;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(7, 1fr);
-
-  align-items: start;
-
-  gap: 10px;
-
-  margin-top: 70px;
-}
-
-.pipeline-step {
-  position: relative;
-
-  text-align: center;
-
-  z-index: 2;
-}
-
-.pipeline-icon {
-  width: 70px;
-  height: 70px;
-
-  margin: 0 auto 18px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  font-size: 1.8rem;
-
-  color: #67e8f9;
-
-  background:
-    rgba(15, 23, 42, 0.95);
-
-  border:
-    1px solid
-    rgba(34, 211, 238, 0.4);
-
-  box-shadow:
-    0 0 20px
-    rgba(34, 211, 238, 0.15);
-
-  transition: 0.3s;
-}
-
-.pipeline-step:hover .pipeline-icon {
-  transform: translateY(-5px) scale(1.08);
-
-  border-color: #22d3ee;
-
-  box-shadow:
-    0 0 30px
-    rgba(34, 211, 238, 0.4);
-}
-
-.pipeline-content span {
-  display: block;
-
-  color: #8b5cf6;
-
-  font-family: monospace;
-
-  font-size: 0.7rem;
-
-  margin-bottom: 8px;
-}
-
-.pipeline-content h3 {
-  font-size: 0.95rem;
-
-  margin-bottom: 8px;
-}
-
-.pipeline-content p {
-  color: #64748b;
-
-  font-size: 0.75rem;
-
-  line-height: 1.6;
-}
-
-.pipeline-line {
-  position: absolute;
-
-  top: 34px;
-
-  left: calc(50% + 40px);
-
-  width: calc(100% - 20px);
-
-  height: 2px;
-
-  background:
-    rgba(34, 211, 238, 0.15);
-
-  overflow: hidden;
-
-  z-index: -1;
-}
-
-.pipeline-line span {
-  position: absolute;
-
-  top: 0;
-  left: -40%;
-
-  width: 40%;
-  height: 100%;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      #22d3ee,
-      transparent
-    );
-
-  animation:
-    pipelineFlow 2s
-    linear
-    infinite;
-}
-
-@keyframes pipelineFlow {
-  from {
-    left: -40%;
-  }
-
-  to {
-    left: 100%;
-  }
-}
-
-@media (max-width: 1100px) {
-  .pipeline {
-    grid-template-columns:
-      repeat(4, 1fr);
-
-    row-gap: 50px;
-  }
-
-  .pipeline-line {
-    display: none;
-  }
-}
-
-@media (max-width: 700px) {
-  .pipeline {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 450px) {
-  .pipeline {
-    grid-template-columns: 1fr;
-  }
-
-  .devops-section {
-    padding:
-      90px
-      5%;
-  }
-}
 /* ================================
    CONTACT
 ================================ */
