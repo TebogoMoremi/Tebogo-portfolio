@@ -1779,7 +1779,36 @@ a {
       #0891b2
     );
 }
+.contact-actions a div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
 
+.contact-actions a span {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.contact-actions a small {
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.contact-actions a svg {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  color: #22d3ee;
+}
+
+.contact-actions .contact-primary svg {
+  color: #ffffff;
+}
+
+.contact-actions .contact-primary small {
+  color: rgba(255, 255, 255, 0.75);
+}
 /* ================================
    FOOTER
 ================================ */
