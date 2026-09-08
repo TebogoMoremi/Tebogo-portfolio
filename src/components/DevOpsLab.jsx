@@ -9,10 +9,7 @@ import {
   FaLock,
 } from "react-icons/fa";
 
-import {
-  SiGithubactions,
-  SiAmazoncloudwatch,
-} from "react-icons/si";
+import { SiGithubactions } from "react-icons/si";
 
 const pipelineSteps = [
   {
@@ -114,10 +111,10 @@ const DevOpsLab = () => {
         </h2>
 
         <p className="devops-intro">
-          A production CI/CD workflow built with GitHub Actions, Docker
-          and AWS. The pipeline securely authenticates through OIDC,
-          publishes container images to Amazon ECR and deploys the
-          production frontend through S3 and CloudFront.
+          A production CI/CD workflow built with GitHub Actions, Docker and AWS.
+          The pipeline securely authenticates through OIDC, publishes container
+          images to Amazon ECR and deploys the production frontend through S3
+          and CloudFront.
         </p>
       </motion.div>
 
@@ -131,9 +128,7 @@ const DevOpsLab = () => {
       >
         <div className="architecture-header">
           <div>
-            <span className="architecture-label">
-              PRODUCTION ARCHITECTURE
-            </span>
+            <span className="architecture-label">PRODUCTION ARCHITECTURE</span>
 
             <h3>Automated AWS Deployment Pipeline</h3>
           </div>
@@ -190,8 +185,8 @@ const DevOpsLab = () => {
           <FaDocker />
 
           <span>
-            Docker images are also built and published to Amazon ECR
-            as part of the CI/CD pipeline.
+            Docker images are also built and published to Amazon ECR as part of
+            the CI/CD pipeline.
           </span>
         </div>
       </motion.div>
@@ -255,9 +250,7 @@ const DevOpsLab = () => {
                 delay: index * 0.08,
               }}
             >
-              <span className="achievement-number">
-                0{index + 1}
-              </span>
+              <span className="achievement-number">0{index + 1}</span>
 
               <h4>{item.title}</h4>
 
@@ -276,16 +269,13 @@ const DevOpsLab = () => {
         transition={{ duration: 0.6 }}
       >
         <div className="devops-stack-title">
-          <SiAmazoncloudwatch />
+          <FaCloud />
           <span>DevOps & Cloud Stack</span>
         </div>
 
         <div className="devops-tech-list">
           {technologies.map((technology) => (
-            <span
-              className="devops-tech"
-              key={technology}
-            >
+            <span className="devops-tech" key={technology}>
               {technology}
             </span>
           ))}
