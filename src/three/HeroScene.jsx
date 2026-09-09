@@ -184,11 +184,11 @@ function OrbitingSkills() {
   ];
 
   // Bigger orbit
- const innerRadiusX = 3.2;
-const innerRadiusZ = 1.8;
+ const innerRadiusX = 2.8;
+const innerRadiusZ = 1.55;
 
-const outerRadiusX = 4.0;
-const outerRadiusZ = 2.25;
+const outerRadiusX = 3.55;
+const outerRadiusZ = 2.0;
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
@@ -342,7 +342,7 @@ function OrbitRings() {
       >
         <torusGeometry
           args={[
-            4.0,
+            2.8,
             0.025,
             16,
             200,
@@ -371,7 +371,7 @@ function OrbitRings() {
       >
         <torusGeometry
           args={[
-            4.0,
+            2.8,
             0.08,
             16,
             200,
@@ -407,7 +407,7 @@ function OrbitRings() {
       >
         <torusGeometry
           args={[
-            5.0,
+            3.55,
             0.025,
             16,
             200,
@@ -436,7 +436,7 @@ function OrbitRings() {
       >
         <torusGeometry
           args={[
-            5.0,
+            3.55,
             0.09,
             16,
             200,
@@ -470,7 +470,7 @@ function OrbitRings() {
       >
         <torusGeometry
           args={[
-            4.55,
+            3.2,
             0.012,
             12,
             180,
@@ -513,8 +513,8 @@ function OrbitParticles() {
       Math.PI *
       2;
 
-    const radiusX = 3.2;
-    const radiusZ = 1.8;
+    const radiusX = 2.8;
+    const radiusZ = 1.55;
 
     positions[i * 3] =
       Math.cos(angle) *
@@ -677,7 +677,7 @@ export default function HeroScene() {
 
       {/* Main visual sits to the right on desktop so the hero text stays readable.
           Keep it centered on mobile. */}
-      <group position={isMobile ? [0, 0, 0] : [3.5, 0, 0]}>
+      <group position={isMobile ? [0, 0, 0] : [3.8, 0, 0]}>
         <OrbitRings />
         <OrbitParticles />
         <WireframeCore />
