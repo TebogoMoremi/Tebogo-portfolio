@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   FaEnvelope,
   FaLinkedin,
@@ -8,17 +7,9 @@ import {
 const Contact = () => {
   return (
     <section id="contact" className="contact-section">
-      <motion.div
-        className="contact-card"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
+      <div className="contact-container">
         <div className="contact-content">
-          <p className="section-label">
-            Contact
-          </p>
+          <span className="section-label">CONTACT</span>
 
           <h2>
             Let&apos;s build something
@@ -33,52 +24,74 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="contact-actions">
+        <div className="contact-links">
+
+          {/* Email */}
           <a
             href="mailto:herroldmoremi@hotmail.com"
-            className="contact-primary"
+            className="contact-card contact-card-primary"
           >
-            <FaEnvelope />
+            <div className="contact-icon">
+              <FaEnvelope />
+            </div>
 
-            <div>
-              <span>Email</span>
-              <small>
+            <div className="contact-card-content">
+              <span className="contact-label">
+                Email
+              </span>
+
+              <span className="contact-value">
                 herroldmoremi@hotmail.com
-              </small>
+              </span>
             </div>
           </a>
 
+          {/* LinkedIn */}
           <a
             href="https://www.linkedin.com/in/tebogo-herrold-moremi-782746157/"
             target="_blank"
             rel="noopener noreferrer"
+            className="contact-card"
           >
-            <FaLinkedin />
+            <div className="contact-icon">
+              <FaLinkedin />
+            </div>
 
-            <div>
-              <span>LinkedIn</span>
-              <small>
+            <div className="contact-card-content">
+              <span className="contact-label">
+                LinkedIn
+              </span>
+
+              <span className="contact-value">
                 Connect with me
-              </small>
+              </span>
             </div>
           </a>
 
+          {/* GitHub */}
           <a
             href="https://github.com/TebogoMoremi"
             target="_blank"
             rel="noopener noreferrer"
+            className="contact-card"
           >
-            <FaGithub />
+            <div className="contact-icon">
+              <FaGithub />
+            </div>
 
-            <div>
-              <span>GitHub</span>
-              <small>
+            <div className="contact-card-content">
+              <span className="contact-label">
+                GitHub
+              </span>
+
+              <span className="contact-value">
                 View my repositories
-              </small>
+              </span>
             </div>
           </a>
+
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

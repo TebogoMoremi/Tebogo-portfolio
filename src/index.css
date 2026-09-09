@@ -1779,6 +1779,186 @@ a {
       #0891b2
     );
 }
+/* =========================================================
+   CONTACT SECTION - FINAL
+========================================================= */
+
+.contact-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.8fr);
+  gap: 70px;
+  align-items: center;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-card {
+  width: 100%;
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 16px 20px;
+
+  text-decoration: none;
+  color: #ffffff;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 12px;
+
+  background: rgba(15, 23, 42, 0.65);
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(34, 211, 238, 0.45);
+
+  background: rgba(15, 23, 42, 0.9);
+}
+
+
+/* PRIMARY EMAIL CARD */
+
+.contact-card-primary {
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #0891b2
+  );
+}
+
+.contact-card-primary:hover {
+  background: linear-gradient(
+    135deg,
+    #8b5cf6,
+    #06b6d4
+  );
+}
+
+
+/* ICON */
+
+.contact-icon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* TEXT AREA */
+
+.contact-card-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 4px;
+}
+
+
+/* Email / LinkedIn / GitHub */
+
+.contact-label {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+
+/* Actual email / description */
+
+.contact-value {
+  display: block;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+  font-weight: 400;
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+.contact-card-primary .contact-value {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+
+/* =========================================================
+   CONTACT RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .contact-container {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .contact-links {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .contact-card {
+    min-height: 70px;
+
+    padding: 14px 16px;
+
+    gap: 14px;
+  }
+
+  .contact-icon {
+    width: 34px;
+    height: 34px;
+
+    font-size: 16px;
+  }
+
+  .contact-label {
+    font-size: 14px;
+  }
+
+  .contact-value {
+    font-size: 12px;
+  }
+}
 
 /* ================================
    FOOTER
