@@ -9,8 +9,9 @@ import {
 const Contact = () => {
   return (
     <section id="contact" className="contact-section">
-      <div className="contact-card">
-        {/* LEFT SIDE */}
+      <div className="contact-container">
+
+        {/* LEFT */}
         <div className="contact-content">
           <p className="section-label">
             CONTACT
@@ -30,66 +31,65 @@ const Contact = () => {
           </p>
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="contact-actions">
+        {/* RIGHT */}
+        <div className="contact-links">
 
-          {/* EMAIL */}
           <a
             href="mailto:herroldmoremi@hotmail.com"
-            className="contact-primary"
+            className="contact-link-card contact-link-primary"
           >
-            <div className="contact-action-icon">
+            <div className="contact-link-icon">
               <FaEnvelope />
             </div>
 
-            <div className="contact-action-content">
-              <span className="contact-action-label">
+            <div className="contact-link-content">
+              <span className="contact-link-label">
                 Email
               </span>
 
-              <span className="contact-action-value">
+              <span className="contact-link-value">
                 herroldmoremi@hotmail.com
               </span>
             </div>
           </a>
 
-          {/* LINKEDIN */}
           <a
             href="https://www.linkedin.com/in/tebogo-herrold-moremi-782746157/"
             target="_blank"
             rel="noopener noreferrer"
+            className="contact-link-card"
           >
-            <div className="contact-action-icon">
+            <div className="contact-link-icon">
               <FaLinkedin />
             </div>
 
-            <div className="contact-action-content">
-              <span className="contact-action-label">
+            <div className="contact-link-content">
+              <span className="contact-link-label">
                 LinkedIn
               </span>
 
-              <span className="contact-action-value">
+              <span className="contact-link-value">
                 Connect with me
               </span>
             </div>
           </a>
 
-          {/* GITHUB */}
           <a
             href="https://github.com/TebogoMoremi"
             target="_blank"
             rel="noopener noreferrer"
+            className="contact-link-card"
           >
-            <div className="contact-action-icon">
+            <div className="contact-link-icon">
               <FaGithub />
             </div>
 
-            <div className="contact-action-content">
-              <span className="contact-action-label">
+            <div className="contact-link-content">
+              <span className="contact-link-label">
                 GitHub
               </span>
 
-              <span className="contact-action-value">
+              <span className="contact-link-value">
                 View my repositories
               </span>
             </div>

@@ -1972,6 +1972,385 @@ a {
     font-size: 0.72rem;
   }
 }
+/* ========================================
+   CONTACT
+======================================== */
+
+.contact-section {
+  position: relative;
+  z-index: 2;
+
+  padding: 120px 8%;
+
+  background:
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(124, 58, 237, 0.12),
+      transparent 40%
+    ),
+    #050816;
+}
+
+
+/* MAIN WRAPPER */
+
+.contact-container {
+  width: 100%;
+  max-width: 1280px;
+
+  margin: 0 auto;
+
+  padding: 54px 58px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.45fr)
+    minmax(320px, 0.65fr);
+
+  align-items: center;
+
+  gap: 70px;
+
+  border:
+    1px solid
+    rgba(34, 211, 238, 0.22);
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 23, 42, 0.74),
+      rgba(15, 23, 42, 0.4)
+    );
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 70px
+    rgba(0, 0, 0, 0.28);
+}
+
+
+/* ========================================
+   LEFT SIDE
+======================================== */
+
+.contact-content {
+  min-width: 0;
+}
+
+.contact-content .section-label {
+  display: inline-block;
+
+  margin-bottom: 16px;
+
+  color: #22d3ee;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.contact-content h2 {
+  max-width: 760px;
+
+  margin: 0 0 24px;
+
+  font-size:
+    clamp(
+      2.8rem,
+      4.5vw,
+      4.3rem
+    );
+
+  line-height: 1.08;
+
+  letter-spacing: -3px;
+}
+
+.contact-content h2 span {
+  background:
+    linear-gradient(
+      90deg,
+      #8b5cf6,
+      #22d3ee
+    );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+}
+
+.contact-content > p:last-child {
+  max-width: 720px;
+
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 0.98rem;
+
+  line-height: 1.85;
+}
+
+
+/* ========================================
+   RIGHT SIDE
+======================================== */
+
+.contact-links {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* INDIVIDUAL CARDS */
+
+.contact-link-card {
+  width: 100%;
+
+  min-height: 78px;
+
+  padding: 14px 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  border:
+    1px solid
+    rgba(148, 163, 184, 0.18);
+
+  border-radius: 12px;
+
+  background:
+    rgba(15, 23, 42, 0.75);
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.contact-link-card:hover {
+  transform:
+    translateX(5px);
+
+  border-color:
+    rgba(34, 211, 238, 0.45);
+
+  background:
+    rgba(15, 23, 42, 0.95);
+
+  box-shadow:
+    0 12px 28px
+    rgba(0, 0, 0, 0.18);
+}
+
+
+/* PRIMARY EMAIL */
+
+.contact-link-primary {
+  border-color: transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #0891b2
+    );
+}
+
+.contact-link-primary:hover {
+  border-color: transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #06b6d4
+    );
+}
+
+
+/* ICON */
+
+.contact-link-icon {
+  width: 40px;
+
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color: white;
+
+  font-size: 17px;
+}
+
+
+/* TEXT */
+
+.contact-link-content {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: center;
+
+  gap: 4px;
+}
+
+
+.contact-link-label {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 0.9rem;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+
+.contact-link-value {
+  display: block;
+
+  max-width: 100%;
+
+  color: #94a3b8;
+
+  font-size: 0.78rem;
+
+  font-weight: 400;
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+
+.contact-link-primary
+.contact-link-value {
+  color:
+    rgba(255, 255, 255, 0.84);
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+
+  .contact-section {
+    padding: 100px 6%;
+  }
+
+  .contact-container {
+    grid-template-columns: 1fr;
+
+    padding: 44px;
+
+    gap: 42px;
+  }
+
+  .contact-links {
+    max-width: 550px;
+  }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+
+  .contact-section {
+    padding: 80px 5%;
+  }
+
+  .contact-container {
+    padding: 30px 22px;
+
+    gap: 34px;
+  }
+
+  .contact-content h2 {
+    font-size:
+      clamp(
+        2.2rem,
+        11vw,
+        3rem
+      );
+
+    letter-spacing: -2px;
+  }
+
+  .contact-content > p:last-child {
+    font-size: 0.9rem;
+  }
+
+  .contact-link-card {
+    min-height: 68px;
+
+    padding: 12px 14px;
+
+    gap: 12px;
+  }
+
+  .contact-link-icon {
+    width: 35px;
+
+    height: 35px;
+
+    flex-basis: 35px;
+
+    font-size: 15px;
+  }
+
+  .contact-link-label {
+    font-size: 0.84rem;
+  }
+
+  .contact-link-value {
+    font-size: 0.72rem;
+  }
+}
 
 /* ================================
    FOOTER
