@@ -1,0 +1,38 @@
+{
+  "family": "tebogo-portfolio-ai-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::263953131930:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "tebogo-portfolio-ai",
+      "image": "263953131930.dkr.ecr.af-south-1.amazonaws.com/tebogo-portfolio-ai:1.0",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "GEMINI_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:af-south-1:263953131930:secret:tebogo-portfolio-ai/gemini-api-key-62yJRH"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "tebogo-portfolio-ai",
+          "awslogs-region": "af-south-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
