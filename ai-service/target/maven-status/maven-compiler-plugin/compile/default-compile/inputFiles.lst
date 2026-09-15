@@ -1,6 +1,8 @@
 C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\controller\ChatController.java
+C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\controller\HealthController.java
 C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\dto\ChatRequest.java
 C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\dto\ChatResponse.java
 C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\PortfolioAiApplication.java
 C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\service\GeminiService.java
 C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\service\PortfolioKnowledgeService.java
+C:\Users\rento\Documents\coding\Portfolio\tebogo-portfolio\ai-service\src\main\java\com\tebogo\portfolioai\service\RateLimitService.java
