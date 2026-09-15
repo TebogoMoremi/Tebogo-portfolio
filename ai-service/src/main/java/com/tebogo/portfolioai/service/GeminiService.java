@@ -3,8 +3,11 @@ package com.tebogo.portfolioai.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -14,12 +17,14 @@ public class GeminiService {
     private static final String GEMINI_URL =
         "https://generativelanguage.googleapis.com/v1beta/interactions";
 
+    private static final String MODEL =
+        "gemini-3.8-flash";
+
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
     private final String apiKey;
 
     public GeminiService(ObjectMapper objectMapper) {
-
         this.objectMapper = objectMapper;
         this.apiKey = System.getenv("GEMINI_API_KEY");
 
@@ -29,88 +34,135 @@ public class GeminiService {
             );
         }
 
-        this.restClient = RestClient.builder()
-            .baseUrl(GEMINI_URL)
-            .build();
+        this.restClient =
+            RestClient.builder()
+                .baseUrl(GEMINI_URL)
+                .build();
     }
 
     public String ask(String question) {
 
         try {
-
-            Map<String, Object> requestBody = Map.of(
-                "model", "gemini-3.6-flash",
-                "input", question
-            );
+            Map<String, Object> requestBody =
+                Map.of(
+                    "model", MODEL,
+                    "input", question
+                );
 
             String jsonResponse =
-                restClient.post()
-                    .header("x-goog-api-key", apiKey)
-                    .header("Content-Type", "application/json")
+                restClient
+                    .post()
+                    .header(
+                        "x-goog-api-key",
+                        apiKey
+                    )
+                    .header(
+                        "Content-Type",
+                        "application/json"
+                    )
                     .body(requestBody)
                     .retrieve()
                     .body(String.class);
 
-            if (jsonResponse == null || jsonResponse.isBlank()) {
-                return "I could not generate a response.";
+            if (
+                jsonResponse == null ||
+                jsonResponse.isBlank()
+            ) {
+                throw new ResponseStatusException(
+                    HttpStatus.BAD_GATEWAY,
+                    "Gemini returned an empty response."
+                );
             }
 
-            JsonNode root = objectMapper.readTree(jsonResponse);
+            JsonNode root =
+                objectMapper.readTree(jsonResponse);
 
-            JsonNode steps = root.get("steps");
+            String status =
+                root.path("status").asText();
 
-            if (steps != null && steps.isArray()) {
+            System.out.println(
+                "Gemini status: " + status
+            );
+
+            JsonNode steps =
+                root.path("steps");
+
+            if (steps.isArray()) {
 
                 for (JsonNode step : steps) {
 
-                    if ("model_output".equals(
-                        step.path("type").asText()
-                    )) {
+                    String type =
+                        step.path("type").asText();
 
-                        JsonNode content = step.get("content");
+                    if (!"model_output".equals(type)) {
+                        continue;
+                    }
 
-                        if (content != null && content.isArray()) {
+                    JsonNode content =
+                        step.path("content");
 
-                            for (JsonNode part : content) {
+                    if (!content.isArray()) {
+                        continue;
+                    }
 
-                                if ("text".equals(
-                                    part.path("type").asText()
-                                )) {
+                    for (JsonNode part : content) {
 
-                                    String text =
-                                        part.path("text").asText();
+                        String text =
+                            part.path("text").asText("");
 
-                                    if (!text.isBlank()) {
-                                        return text;
-                                    }
-                                }
-                            }
+                        if (!text.isBlank()) {
+                            return text;
                         }
                     }
                 }
             }
 
-            System.err.println(
-                "Gemini returned a response but no model text was found:"
+            throw new ResponseStatusException(
+                HttpStatus.BAD_GATEWAY,
+                "Gemini completed but returned no model text."
             );
 
-            System.err.println(jsonResponse);
+        } catch (
+            HttpClientErrorException.TooManyRequests e
+        ) {
 
-            return "I could not generate a response.";
+            System.err.println(
+                "Gemini rate limit reached."
+            );
+
+            System.err.println(
+                "Gemini HTTP status: 429"
+            );
+
+            throw new ResponseStatusException(
+                HttpStatus.TOO_MANY_REQUESTS,
+                "AI request limit reached. Please try again shortly."
+            );
+
+        } catch (ResponseStatusException e) {
+
+            throw e;
 
         } catch (Exception e) {
 
             System.err.println(
-                "Gemini request failed: "
-                    + e.getClass().getSimpleName()
-                    + " - "
+                "Gemini request failed."
+            );
+
+            System.err.println(
+                "Type: "
+                    + e.getClass().getName()
+            );
+
+            System.err.println(
+                "Message: "
                     + e.getMessage()
             );
 
-            return """
-                The portfolio AI assistant is temporarily unavailable.
-                Please try again shortly.
-                """.trim();
+            throw new ResponseStatusException(
+                HttpStatus.BAD_GATEWAY,
+                "The AI service is temporarily unavailable."
+            );
         }
     }
 }

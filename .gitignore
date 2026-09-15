@@ -26,3 +26,17 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Java / Maven build output
+ai-service/target/
+**/target/
+
+# AWS deployment working files
+ai-service/task-definition*.json
+ai-service/taskdef*.json
+
+# Local environment / secrets
+.env
+.env.local
+.env.*.local
+ai-service/.env

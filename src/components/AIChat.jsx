@@ -1,74 +1,134 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import {
-  FaRobot,
-  FaTimes,
-  FaPaperPlane,
-} from "react-icons/fa";
+  FiMessageCircle,
+  FiSend,
+  FiX,
+  FiCpu,
+  FiClock,
+} from "react-icons/fi";
 
-const suggestedQuestions = [
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
+const SUGGESTED_QUESTIONS = [
   "What are Tebogo's strongest skills?",
   "What AWS experience does Tebogo have?",
   "Which projects demonstrate Java?",
 ];
 
-// Local: http://localhost:8080
-// Production: CloudFront -> ALB -> ECS -> Spring Boot
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "https://d2axaeq2znzcoy.cloudfront.net";
-
-const AIChat = () => {
+export default function AIChat() {
   const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const messagesEndRef = useRef(null);
 
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Hi! I'm Tebogo's AI portfolio assistant. Ask me about his skills, projects, experience or DevOps work.",
+      content:
+        "Hi! I'm Tebogo's portfolio assistant. Ask me about his skills, experience, projects, or DevOps and cloud work.",
     },
   ]);
 
-  // Automatically scroll to newest message
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isRateLimited, setIsRateLimited] =
+    useState(false);
+
+  const [rateLimitSeconds, setRateLimitSeconds] =
+    useState(0);
+
+  const messagesEndRef = useRef(null);
+
+  /*
+   * Automatically scroll to the latest message.
+   */
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
+      block: "end",
     });
-  }, [messages, isLoading]);
+  }, [messages, isLoading, isRateLimited]);
 
-  const sendMessage = async (message) => {
-    const cleanMessage = message.trim();
-
-    if (!cleanMessage || isLoading) {
+  /*
+   * Rate-limit countdown.
+   */
+  useEffect(() => {
+    if (!isRateLimited) {
       return;
     }
 
-    // Display user message
-    setMessages((current) => [
-      ...current,
-      {
-        role: "user",
-        text: cleanMessage,
-      },
+    if (rateLimitSeconds <= 0) {
+      setIsRateLimited(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setRateLimitSeconds((seconds) =>
+        Math.max(seconds - 1, 0)
+      );
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [isRateLimited, rateLimitSeconds]);
+
+  /*
+   * Send a message to the Spring Boot backend.
+   */
+  const sendMessage = async (messageText) => {
+    const message = messageText.trim();
+
+    if (!message || isLoading || isRateLimited) {
+      return;
+    }
+
+    const userMessage = {
+      role: "user",
+      content: message,
+    };
+
+    setMessages((previous) => [
+      ...previous,
+      userMessage,
     ]);
 
     setInput("");
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: cleanMessage,
-        }),
-      });
+      const response = await fetch(
+        `${API_URL}/api/chat`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            message,
+          }),
+        }
+      );
+
+      /*
+       * Backend rate limit.
+       */
+      if (response.status === 429) {
+        setIsRateLimited(true);
+        setRateLimitSeconds(60);
+
+        setMessages((previous) => [
+          ...previous,
+          {
+            role: "assistant",
+            content:
+              "You've reached the chat request limit. Please wait about a minute before asking another question.",
+          },
+        ]);
+
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(
@@ -78,27 +138,27 @@ const AIChat = () => {
 
       const data = await response.json();
 
-      setMessages((current) => [
-        ...current,
+      setMessages((previous) => [
+        ...previous,
         {
           role: "assistant",
-          text:
+          content:
             data.answer ||
-            "I couldn't generate an answer.",
+            "I couldn't generate a response. Please try again.",
         },
       ]);
     } catch (error) {
       console.error(
-        "AI assistant request failed:",
+        "Portfolio AI request failed:",
         error
       );
 
-      setMessages((current) => [
-        ...current,
+      setMessages((previous) => [
+        ...previous,
         {
           role: "assistant",
-          text:
-            "Sorry, I couldn't reach the portfolio assistant. Please try again.",
+          content:
+            "The portfolio assistant is temporarily unavailable. Please try again shortly.",
         },
       ]);
     } finally {
@@ -113,13 +173,28 @@ const AIChat = () => {
 
   return (
     <>
+      {/* Floating chatbot button */}
+      <motion.button
+        className="ai-chat-toggle"
+        onClick={() => setIsOpen(true)}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        aria-label="Open portfolio assistant"
+      >
+        <FiMessageCircle />
+
+        <span>
+          Ask Tebogo AI
+        </span>
+      </motion.button>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="ai-chat"
+            className="ai-chat-panel"
             initial={{
               opacity: 0,
-              y: 20,
+              y: 30,
               scale: 0.95,
             }}
             animate={{
@@ -129,73 +204,103 @@ const AIChat = () => {
             }}
             exit={{
               opacity: 0,
-              y: 20,
+              y: 30,
               scale: 0.95,
             }}
             transition={{
-              duration: 0.25,
+              duration: 0.2,
             }}
           >
-            {/* HEADER */}
+            {/* Header */}
             <div className="ai-chat-header">
-              <div className="ai-chat-title">
+              <div className="ai-chat-header-info">
                 <div className="ai-chat-avatar">
-                  <FaRobot />
+                  <FiCpu />
                 </div>
 
                 <div>
-                  <h3>Ask Tebogo AI</h3>
+                  <h3>
+                    Ask Tebogo AI
+                  </h3>
 
-                  <span>
-                    <i />
+                  <div className="ai-chat-status">
+                    <span className="ai-status-dot" />
+
                     Portfolio Assistant
-                  </span>
+                  </div>
                 </div>
               </div>
 
               <button
-                type="button"
                 className="ai-chat-close"
                 onClick={() => setIsOpen(false)}
-                aria-label="Close AI assistant"
+                aria-label="Close portfolio assistant"
               >
-                <FaTimes />
+                <FiX />
               </button>
             </div>
 
-            {/* MESSAGES */}
+            {/* Messages */}
             <div className="ai-chat-messages">
-              {messages.map((message, index) => (
-                <div
-                  key={`${message.role}-${index}`}
-                  className={`ai-message ${message.role}`}
-                >
-                  {message.role === "assistant" && (
-                    <div className="ai-message-icon">
-                      <FaRobot />
-                    </div>
-                  )}
+              {messages.map((message, index) => {
+                const isUser =
+                  message.role === "user";
 
-                  <div className="ai-message-bubble">
-                    {message.role === "assistant" ? (
-                      <ReactMarkdown>
-                        {message.text}
-                      </ReactMarkdown>
+                return (
+                  <div
+                    key={`${message.role}-${index}`}
+                    className={`ai-message ${
+                      isUser
+                        ? "ai-message-user"
+                        : "ai-message-assistant"
+                    }`}
+                  >
+                    {isUser ? (
+                      <span className="ai-user-text">
+                        {message.content}
+                      </span>
                     ) : (
-                      message.text
+                      /*
+                       * IMPORTANT:
+                       * Keep Markdown inside its own wrapper.
+                       * This prevents global portfolio styles
+                       * from breaking lists and paragraphs.
+                       */
+                      <div className="ai-markdown">
+                        <ReactMarkdown>
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
                     )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
-              {/* TYPING INDICATOR */}
-              {isLoading && (
-                <div className="ai-message assistant">
-                  <div className="ai-message-icon">
-                    <FaRobot />
+              {/* Suggested questions */}
+              {messages.length === 1 &&
+                !isLoading &&
+                !isRateLimited && (
+                  <div className="ai-suggestions">
+                    {SUGGESTED_QUESTIONS.map(
+                      (question) => (
+                        <button
+                          key={question}
+                          type="button"
+                          onClick={() =>
+                            sendMessage(question)
+                          }
+                        >
+                          {question}
+                        </button>
+                      )
+                    )}
                   </div>
+                )}
 
-                  <div className="ai-message-bubble ai-typing">
+              {/* Typing indicator */}
+              {isLoading && (
+                <div className="ai-message ai-message-assistant ai-loading-message">
+                  <div className="ai-typing">
                     <span />
                     <span />
                     <span />
@@ -203,89 +308,67 @@ const AIChat = () => {
                 </div>
               )}
 
-              {/* SUGGESTED QUESTIONS */}
-              {messages.length === 1 && !isLoading && (
-                <div className="ai-suggestions">
-                  <p>Try asking:</p>
+              {/* Rate limit */}
+              {isRateLimited && (
+                <div className="ai-rate-limit">
+                  <FiClock />
 
-                  {suggestedQuestions.map((question) => (
-                    <button
-                      type="button"
-                      key={question}
-                      onClick={() =>
-                        sendMessage(question)
-                      }
-                    >
-                      {question}
-                    </button>
-                  ))}
+                  <span>
+                    Available again in{" "}
+                    {rateLimitSeconds}s
+                  </span>
                 </div>
               )}
 
               <div ref={messagesEndRef} />
             </div>
 
-            {/* INPUT */}
+            {/* Input */}
             <form
               className="ai-chat-input"
               onSubmit={handleSubmit}
             >
               <input
                 type="text"
-                placeholder={
-                  isLoading
-                    ? "Tebogo AI is thinking..."
-                    : "Ask about Tebogo..."
-                }
                 value={input}
                 onChange={(event) =>
                   setInput(event.target.value)
                 }
-                disabled={isLoading}
+                placeholder={
+                  isRateLimited
+                    ? `Try again in ${rateLimitSeconds}s`
+                    : "Ask about Tebogo..."
+                }
                 maxLength={500}
-                autoComplete="off"
-                aria-label="Ask Tebogo AI"
+                disabled={
+                  isLoading ||
+                  isRateLimited
+                }
+                aria-label="Ask about Tebogo"
               />
 
               <button
                 type="submit"
                 disabled={
-                  !input.trim() || isLoading
+                  !input.trim() ||
+                  isLoading ||
+                  isRateLimited
                 }
                 aria-label="Send message"
               >
-                <FaPaperPlane />
+                <FiSend />
               </button>
             </form>
 
+            {/* Footer */}
             <div className="ai-chat-footer">
-              AI-powered portfolio assistant
+              {isRateLimited
+                ? `Available again in ${rateLimitSeconds}s`
+                : "Powered by Tebogo's portfolio AI"}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* FLOATING BUTTON */}
-      <motion.button
-        type="button"
-        className="ai-chat-trigger"
-        onClick={() =>
-          setIsOpen((current) => !current)
-        }
-        whileHover={{
-          scale: 1.05,
-        }}
-        whileTap={{
-          scale: 0.96,
-        }}
-        aria-label="Open Ask Tebogo AI"
-      >
-        <FaRobot />
-        <span>Ask Tebogo AI</span>
-        <i className="ai-trigger-status" />
-      </motion.button>
     </>
   );
-};
-
-export default AIChat;
+}
