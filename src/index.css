@@ -2419,9 +2419,16 @@ a {
   }
 }
 .back-to-top {
-  position: fixed;
-  right: 30px;
-  bottom: 20px;
+  color: #94a3b8;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .back-to-top:hover {
@@ -3233,8 +3240,44 @@ a {
 .ai-chat-toggle {
   position: fixed;
   right: 32px;
-  bottom: 32px;
-  z-index: 1000;
+  bottom: 28px;
+
+  z-index: 10000;
+
+  min-height: 52px;
+
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 999px;
+
+  background: rgba(5, 8, 22, 0.92);
+
+  color: #e2e8f0;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.35),
+    0 0 25px rgba(34, 211, 238, 0.05);
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease;
 }
 
 .ai-chat-toggle:hover {
