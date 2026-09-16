@@ -1,163 +1,111 @@
 package com.tebogo.portfolioai.service;
 
+import com.tebogo.portfolioai.knowledge.LocalAnswerService;
+import com.tebogo.portfolioai.knowledge.PortfolioProfile;
+
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class PortfolioKnowledgeService {
 
     private final GeminiService geminiService;
+    private final LocalAnswerService localAnswerService;
+    private final PortfolioProfile portfolioProfile;
 
     public PortfolioKnowledgeService(
-        GeminiService geminiService
+        GeminiService geminiService,
+        LocalAnswerService localAnswerService,
+        PortfolioProfile portfolioProfile
     ) {
-        this.geminiService =
-            geminiService;
+        this.geminiService = geminiService;
+        this.localAnswerService = localAnswerService;
+        this.portfolioProfile = portfolioProfile;
     }
 
-    public String answer(
-        String question
-    ) {
+    public String answer(String question) {
 
-        String portfolioContext = """
+        // ---------------------------------------------------------
+        // 1. TRY LOCAL KNOWLEDGE FIRST
+        // ---------------------------------------------------------
 
-            NAME
+        Optional<String> localAnswer =
+            localAnswerService.findAnswer(question);
 
-            Tebogo Moremi
+        if (localAnswer.isPresent()) {
+            System.out.println(
+                "AI ROUTE -> LOCAL KNOWLEDGE"
+            );
 
-            ROLE
+            return localAnswer.get();
+        }
 
-            Software Developer
-            DevOps and Cloud Enthusiast
 
-            TECHNICAL SKILLS
+        // ---------------------------------------------------------
+        // 2. BUILD GEMINI PROMPT
+        // ---------------------------------------------------------
 
-            Frontend:
-            React, Angular, JavaScript,
-            HTML and CSS.
+        String prompt = buildPrompt(question);
 
-            Backend:
-            Java, C#, ASP.NET Core,
-            Node.js and Express.js.
 
-            Databases:
-            SQL, PostgreSQL,
-            MySQL and MSSQL.
+        // ---------------------------------------------------------
+        // 3. TRY GEMINI
+        // ---------------------------------------------------------
 
-            DevOps and Cloud:
-            Docker, Kubernetes, AWS,
-            GitHub Actions, CI/CD,
-            ECR, ECS/Fargate,
-            S3, CloudFront,
-            IAM, OIDC and Nginx.
+        Optional<String> geminiAnswer =
+            geminiService.ask(prompt);
 
-            Integration and Testing:
-            Talend, ETL, SoapUI,
-            SOAP, WSDL and REST APIs.
+        if (geminiAnswer.isPresent()) {
+            System.out.println(
+                "AI ROUTE -> GEMINI"
+            );
 
-            EXPERIENCE
+            return geminiAnswer.get();
+        }
 
-            CherryOlive
 
-            Software Engineer
-            January 2026 - May 2026.
+        // ---------------------------------------------------------
+        // 4. GEMINI UNAVAILABLE / QUOTA EXHAUSTED
+        // ---------------------------------------------------------
 
-            Experience included software
-            development, Angular,
-            Express.js, API testing
-            with SoapUI and Talend ETL
-            integration workflows.
+        System.out.println(
+            "AI ROUTE -> LOCAL FALLBACK"
+        );
 
-            Umuzi.org
+        return getLocalFallback();
+    }
 
-            Web Developer Recruit
-            August 2023 - August 2024.
 
-            Worked on practical web
-            development projects,
-            JavaScript, backend development,
-            databases and automated testing.
+    private String buildPrompt(String question) {
 
-            WOPL
+        return """
+            You are Tebogo Moremi's portfolio AI assistant.
 
-            Full-Stack Developer
-            June 2022 - August 2023.
-
-            PROJECTS
-
-            AWS EKS Transactions Service:
-
-            Java backend service involving
-            REST APIs, JPA/Hibernate,
-            PostgreSQL, Docker,
-            Kubernetes and AWS technologies.
-
-            Banking Application:
-
-            React-based banking application.
-
-            Log Cruncher:
-
-            Python tool for analysing
-            application logs,
-            identifying CPS errors
-            and producing reports.
-
-            Visitor Management API:
-
-            Node.js and PostgreSQL
-            backend application
-            with automated tests.
-
-            Personal Portfolio:
-
-            React and Three.js portfolio
-            with automated CI/CD using
-            GitHub Actions and AWS services
-            including S3, CloudFront,
-            Docker, ECR, IAM and OIDC.
-
-            """;
-
-        String prompt = """
-
-            You are Tebogo Moremi's
-            portfolio AI assistant.
-
-            Your audience includes
-            recruiters, hiring managers
+            Your audience includes recruiters, hiring managers
             and software engineers.
 
-            Answer the user's question
-            using ONLY the portfolio
+            Answer the user's question using ONLY the portfolio
             information provided below.
 
             RULES:
 
-            - Never invent skills,
-              experience, qualifications,
-              employers, projects
-              or technologies.
+            - Never invent skills, experience, qualifications,
+              employers, projects or technologies.
 
-            - If the portfolio information
-              does not contain enough
-              information to answer,
-              clearly say so.
+            - If the portfolio information does not contain enough
+              information to answer, clearly say so.
 
-            - Keep answers concise
-              and professional.
+            - Keep answers concise and professional.
 
-            - Refer to Tebogo
-              in the third person.
+            - Refer to Tebogo in the third person.
 
-            - Highlight relevant
-              technical skills when useful.
+            - Highlight relevant technical skills when useful.
 
-            - Do not claim Tebogo has
-              experience that is not
+            - Do not claim Tebogo has experience that is not
               explicitly listed.
 
-            - Focus on information useful
-              to recruiters and
+            - Focus on information useful to recruiters and
               hiring managers.
 
             PORTFOLIO INFORMATION:
@@ -167,14 +115,34 @@ public class PortfolioKnowledgeService {
             QUESTION:
 
             %s
-
             """.formatted(
-                portfolioContext,
+                portfolioProfile.getFullProfile(),
                 question
             );
+    }
 
-        return geminiService.ask(
-            prompt
-        );
+
+    private String getLocalFallback() {
+
+        return """
+            I don't have enough portfolio information to answer
+            that specific question right now.
+
+            I can still help with questions about:
+
+            - Tebogo's technical skills
+            - Java and backend development
+            - React and frontend development
+            - AWS and cloud experience
+            - Docker and Kubernetes
+            - DevOps and CI/CD
+            - Software development projects
+            - Work experience
+            - Talend and system integration
+            - Databases
+
+            Try asking something like:
+            **"What AWS experience does Tebogo have?"**
+            """;
     }
 }

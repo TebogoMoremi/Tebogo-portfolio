@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:af-south-1:263953131930:task-definition/tebogo-portfolio-ai-task:5",
+    "taskDefinitionArn": "arn:aws:ecs:af-south-1:263953131930:task-definition/tebogo-portfolio-ai-task:9",
     "containerDefinitions": [
         {
             "name": "tebogo-portfolio-ai",
-            "image": "263953131930.dkr.ecr.af-south-1.amazonaws.com/tebogo-portfolio-ai:1.4",
+            "image": "263953131930.dkr.ecr.af-south-1.amazonaws.com/tebogo-portfolio-ai:1.8",
             "cpu": 0,
             "portMappings": [
                 {
@@ -36,7 +36,7 @@
     "family": "tebogo-portfolio-ai-task",
     "executionRoleArn": "arn:aws:iam::263953131930:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 5,
+    "revision": 9,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -68,14 +68,14 @@
     "placementConstraints": [],
     "compatibilities": [
         "EC2",
-        "MANAGED_INSTANCES",
-        "FARGATE"
+        "FARGATE",
+        "MANAGED_INSTANCES"
     ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2026-09-14T21:30:22.430000+02:00",
+    "registeredAt": "2026-09-16T05:37:14.761000+02:00",
     "registeredBy": "arn:aws:iam::263953131930:root"
 }

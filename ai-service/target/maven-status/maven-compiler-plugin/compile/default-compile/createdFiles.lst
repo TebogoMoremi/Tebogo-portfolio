@@ -4,6 +4,8 @@ com\tebogo\portfolioai\dto\ChatRequest.class
 com\tebogo\portfolioai\controller\ChatController.class
 com\tebogo\portfolioai\dto\ChatResponse.class
 com\tebogo\portfolioai\service\PortfolioKnowledgeService.class
+com\tebogo\portfolioai\knowledge\PortfolioProfile.class
+com\tebogo\portfolioai\knowledge\LocalAnswerService.class
 com\tebogo\portfolioai\service\RateLimitService$ClientWindow.class
 com\tebogo\portfolioai\service\RateLimitService.class
 com\tebogo\portfolioai\service\GeminiService.class

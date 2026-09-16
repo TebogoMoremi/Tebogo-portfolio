@@ -3,13 +3,12 @@ package com.tebogo.portfolioai.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GeminiService {
@@ -25,24 +24,58 @@ public class GeminiService {
     private final String apiKey;
 
     public GeminiService(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-        this.apiKey = System.getenv("GEMINI_API_KEY");
 
-        if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalStateException(
-                "GEMINI_API_KEY environment variable is not set."
-            );
-        }
+        this.objectMapper = objectMapper;
+
+        this.apiKey =
+            System.getenv("GEMINI_API_KEY");
 
         this.restClient =
             RestClient.builder()
                 .baseUrl(GEMINI_URL)
                 .build();
+
+        if (isAvailable()) {
+            System.out.println(
+                "Gemini integration is available."
+            );
+        } else {
+            System.out.println(
+                "Gemini integration is disabled. " +
+                "Local portfolio answers will still work."
+            );
+        }
     }
 
-    public String ask(String question) {
+    /**
+     * Returns true when a Gemini API key is available.
+     */
+    public boolean isAvailable() {
+
+        return apiKey != null &&
+               !apiKey.isBlank();
+    }
+
+    /**
+     * Attempts to ask Gemini.
+     *
+     * Optional.empty() means Gemini could not provide
+     * an answer. This allows the portfolio assistant
+     * to continue working with local knowledge.
+     */
+    public Optional<String> ask(String question) {
+
+        if (!isAvailable()) {
+
+            System.out.println(
+                "Gemini skipped because API key is unavailable."
+            );
+
+            return Optional.empty();
+        }
 
         try {
+
             Map<String, Object> requestBody =
                 Map.of(
                     "model", MODEL,
@@ -68,14 +101,18 @@ public class GeminiService {
                 jsonResponse == null ||
                 jsonResponse.isBlank()
             ) {
-                throw new ResponseStatusException(
-                    HttpStatus.BAD_GATEWAY,
+
+                System.err.println(
                     "Gemini returned an empty response."
                 );
+
+                return Optional.empty();
             }
 
             JsonNode root =
-                objectMapper.readTree(jsonResponse);
+                objectMapper.readTree(
+                    jsonResponse
+                );
 
             String status =
                 root.path("status").asText();
@@ -94,7 +131,9 @@ public class GeminiService {
                     String type =
                         step.path("type").asText();
 
-                    if (!"model_output".equals(type)) {
+                    if (
+                        !"model_output".equals(type)
+                    ) {
                         continue;
                     }
 
@@ -108,61 +147,73 @@ public class GeminiService {
                     for (JsonNode part : content) {
 
                         String text =
-                            part.path("text").asText("");
+                            part
+                                .path("text")
+                                .asText("");
 
                         if (!text.isBlank()) {
-                            return text;
+
+                            return Optional.of(
+                                text
+                            );
                         }
                     }
                 }
             }
 
-            throw new ResponseStatusException(
-                HttpStatus.BAD_GATEWAY,
+            System.err.println(
                 "Gemini completed but returned no model text."
             );
+
+            return Optional.empty();
 
         } catch (
             HttpClientErrorException.TooManyRequests e
         ) {
 
+            /*
+             * IMPORTANT:
+             *
+             * Gemini's free-tier quota has been exhausted.
+             *
+             * Do NOT propagate HTTP 429 to React.
+             *
+             * Our own RateLimitService is responsible for
+             * visitor-level 429 responses.
+             */
+
             System.err.println(
-                "Gemini rate limit reached."
+                "Gemini free-tier quota reached."
             );
 
             System.err.println(
                 "Gemini HTTP status: 429"
             );
 
-            throw new ResponseStatusException(
-                HttpStatus.TOO_MANY_REQUESTS,
-                "AI request limit reached. Please try again shortly."
-            );
-
-        } catch (ResponseStatusException e) {
-
-            throw e;
+            return Optional.empty();
 
         } catch (Exception e) {
+
+            /*
+             * Gemini being unavailable should never make
+             * the whole portfolio assistant unavailable.
+             */
 
             System.err.println(
                 "Gemini request failed."
             );
 
             System.err.println(
-                "Type: "
-                    + e.getClass().getName()
+                "Type: " +
+                e.getClass().getSimpleName()
             );
 
             System.err.println(
-                "Message: "
-                    + e.getMessage()
+                "Message: " +
+                e.getMessage()
             );
 
-            throw new ResponseStatusException(
-                HttpStatus.BAD_GATEWAY,
-                "The AI service is temporarily unavailable."
-            );
+            return Optional.empty();
         }
     }
 }
