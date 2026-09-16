@@ -1,0 +1,59 @@
+import json
+import subprocess
+
+SNS_ARN = "arn:aws:sns:af-south-1:263953131930:Portfolio-AI-Alerts"
+REGION = "af-south-1"
+
+with open("portfolio-alarms.json", "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+alarms = data.get("MetricAlarms", [])
+
+# Fields returned by describe-alarms that put-metric-alarm
+# does not accept as input.
+remove_fields = {
+    "AlarmArn",
+    "AlarmConfigurationUpdatedTimestamp",
+    "StateValue",
+    "StateReason",
+    "StateReasonData",
+    "StateUpdatedTimestamp",
+    "StateTransitionedTimestamp",
+    "ActionsEnabled"
+}
+
+print(f"Found {len(alarms)} alarms.")
+
+for alarm in alarms:
+    name = alarm["AlarmName"]
+
+    for field in remove_fields:
+        alarm.pop(field, None)
+
+    # Preserve existing actions and add our SNS topic.
+    actions = alarm.get("AlarmActions", [])
+
+    if SNS_ARN not in actions:
+        actions.append(SNS_ARN)
+
+    alarm["AlarmActions"] = actions
+
+    temp_file = "alarm-update.json"
+
+    with open(temp_file, "w", encoding="utf-8") as f:
+        json.dump(alarm, f, indent=2, default=str)
+
+    print(f"Updating: {name}")
+
+    subprocess.run(
+        [
+            "aws",
+            "cloudwatch",
+            "put-metric-alarm",
+            "--cli-input-json",
+            f"file://{temp_file}",
+            "--region",
+            REGION,
+        ],
+        check=True,
+   
