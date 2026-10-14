@@ -23,7 +23,7 @@ export default function Hero() {
       </div>
       <div className="hero-visual">
         <div className="visual-caption"><span className="tiny-cross">+</span> CONNECTING CODE & CLOUD <span>01 / 03</span></div>
-        <SceneViewport kind="hero" label="An illuminated engineering core surrounded by technology orbits" />
+        <SceneViewport kind="hero" label="A floating laptop and soft cloud surrounded by familiar technology icons" />
         <div className="visual-footer"><span className="status-dot" /> SOFTWARE · SYSTEMS · INFRASTRUCTURE</div>
       </div>
       <div className="hero-bottom"><a href="#about">SCROLL TO EXPLORE <span>↓</span></a><span>BUILT WITH PURPOSE. ENGINEERED TO EVOLVE.</span></div>

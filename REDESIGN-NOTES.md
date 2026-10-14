@@ -1,5 +1,11 @@
 # Portfolio redesign — 14 October 2026
 
+## Follow-up: warmer, tangible 3D
+
+Replaced the faceted core with a locally modelled laptop, code editor, keyboard and soft cloud. Restored recognizable technology logos in rounded tiles, reduced particles and simplified the orbital paths. Added soft warm/cool studio lighting. Architecture now uses miniature laptops, clouds, server racks, storage stacks and an envelope for alerts. Static fallback also uses laptop/cloud imagery. No downloaded models or new dependencies.
+
+Validation: production build and lint passed; desktop hero inspected without console errors; architecture scene and ECS selection verified. Lazy renderer is approximately 918 kB minified / 246 kB gzip; the main bundle is approximately 506 kB / 163 kB gzip. Earlier validation below describes the initial redesign.
+
 ## Delivered
 
 - Recruiter-first hero: name, full-stack/cloud role, technology highlights, work/CV/contact actions and a dedicated interactive 3D composition.

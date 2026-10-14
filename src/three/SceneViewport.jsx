@@ -1,5 +1,6 @@
 import { Component, Suspense, lazy, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { FaLaptopCode, FaCloud } from "react-icons/fa";
 
 const SceneCanvas = lazy(() => import("./SceneCanvas"));
 class SceneBoundary extends Component {
@@ -8,7 +9,7 @@ class SceneBoundary extends Component {
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 function StaticCore() {
-  return <div className="static-core" aria-hidden="true"><i /><i /><i /><div>TM<span>CODE / CLOUD</span></div></div>;
+  return <div className="static-workspace" aria-hidden="true"><FaCloud /><FaLaptopCode /><span>CODE / CLOUD</span></div>;
 }
 
 // Load the renderer on approach and release offscreen WebGL contexts.
