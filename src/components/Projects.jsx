@@ -96,7 +96,7 @@ const Projects = () => {
             </div>
 
             <div className="project-links">
-              <a
+              {project.github !== "#" ? <a
                 href={project.github}
                 target="_blank"
                 rel="noreferrer"
@@ -104,9 +104,9 @@ const Projects = () => {
               >
                 <FaGithub />
                 Code
-              </a>
+              </a> : <span className="unavailable-link">Code link coming soon</span>}
 
-              <a
+              {project.live !== "#" ? <a
                 href={project.live}
                 target="_blank"
                 rel="noreferrer"
@@ -114,7 +114,7 @@ const Projects = () => {
               >
                 <FaExternalLinkAlt />
                 Live
-              </a>
+              </a> : <span className="unavailable-link">Preview coming soon</span>}
             </div>
           </motion.article>
         ))}

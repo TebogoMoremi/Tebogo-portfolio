@@ -32,7 +32,7 @@ const About = () => {
           </p>
 
           <p>
-            My experience includes frontend development, backend APIs,, relational and non-relational
+            My experience includes frontend development, backend APIs, relational and non-relational
             databases, system integration, testing and DevOps technologies.
           </p>
 

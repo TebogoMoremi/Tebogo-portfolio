@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import ArchitectureExplorer from "./ArchitectureExplorer";
 
 import {
   FaGithub,
@@ -118,7 +119,9 @@ const DevOpsLab = () => {
         </p>
       </motion.div>
 
-      {/* Architecture */}
+      <ArchitectureExplorer />
+
+      {/* Deployment pipeline, separate from runtime request architecture. */}
       <motion.div
         className="devops-architecture"
         initial={{ opacity: 0, y: 25 }}
@@ -128,14 +131,14 @@ const DevOpsLab = () => {
       >
         <div className="architecture-header">
           <div>
-            <span className="architecture-label">PRODUCTION ARCHITECTURE</span>
+            <span className="architecture-label">DEPLOYMENT WORKFLOW</span>
 
             <h3>Automated AWS Deployment Pipeline</h3>
           </div>
 
           <div className="architecture-status">
             <span className="status-dot" />
-            LIVE
+            CI/CD
           </div>
         </div>
 
