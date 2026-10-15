@@ -1,5 +1,6 @@
+import WhatsAppButton from "./WhatsAppButton";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import {
   FiMessageCircle,
@@ -19,6 +20,10 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 export default function AIChat() {
+  const reducedMotion = useReducedMotion();
+  const toggleRef = useRef(null);
+  const inputRef = useRef(null);
+  const closeChat = () => { setIsOpen(false); toggleRef.current?.focus(); };
   const [isOpen, setIsOpen] = useState(false);
 
   const [messages, setMessages] = useState([
@@ -32,11 +37,9 @@ export default function AIChat() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isRateLimited, setIsRateLimited] =
-    useState(false);
-
   const [rateLimitSeconds, setRateLimitSeconds] =
     useState(0);
+  const isRateLimited = rateLimitSeconds > 0;
 
   const messagesEndRef = useRef(null);
 
@@ -45,21 +48,18 @@ export default function AIChat() {
    */
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
+      behavior: reducedMotion ? "instant" : "smooth",
       block: "end",
     });
-  }, [messages, isLoading, isRateLimited]);
+  }, [messages, isLoading, isRateLimited, reducedMotion]);
+
+  useEffect(() => { if (isOpen) inputRef.current?.focus(); }, [isOpen]);
 
   /*
    * Rate-limit countdown.
    */
   useEffect(() => {
     if (!isRateLimited) {
-      return;
-    }
-
-    if (rateLimitSeconds <= 0) {
-      setIsRateLimited(false);
       return;
     }
 
@@ -115,7 +115,6 @@ export default function AIChat() {
        * Backend rate limit.
        */
       if (response.status === 429) {
-        setIsRateLimited(true);
         setRateLimitSeconds(60);
 
         setMessages((previous) => [
@@ -173,13 +172,16 @@ export default function AIChat() {
 
   return (
     <>
-      {/* Floating chatbot button */}
+      <div className="floating-actions">
       <motion.button
+        ref={toggleRef}
         className="ai-chat-toggle"
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Open portfolio assistant"
+        aria-expanded={isOpen}
+        aria-controls="portfolio-assistant"
       >
         <FiMessageCircle />
 
@@ -188,9 +190,15 @@ export default function AIChat() {
         </span>
       </motion.button>
 
+      {!isOpen && <WhatsAppButton floating />}
+      </div>
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="portfolio-assistant"
+            role="dialog"
+            aria-label="Portfolio assistant"
+            onKeyDown={event => { if (event.key === "Escape") closeChat(); }}
             className="ai-chat-panel"
             initial={{
               opacity: 0,
@@ -233,7 +241,7 @@ export default function AIChat() {
 
               <button
                 className="ai-chat-close"
-                onClick={() => setIsOpen(false)}
+                onClick={closeChat}
                 aria-label="Close portfolio assistant"
               >
                 <FiX />
@@ -241,7 +249,7 @@ export default function AIChat() {
             </div>
 
             {/* Messages */}
-            <div className="ai-chat-messages">
+            <div className="ai-chat-messages" role="log" aria-live="polite" aria-relevant="additions text" aria-busy={isLoading}>
               {messages.map((message, index) => {
                 const isUser =
                   message.role === "user";
@@ -329,6 +337,7 @@ export default function AIChat() {
               onSubmit={handleSubmit}
             >
               <input
+                ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(event) =>

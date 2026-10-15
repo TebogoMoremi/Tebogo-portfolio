@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaCreditCard, FaCloud, FaTerminal, FaDatabase } from "react-icons/fa";
+import GlassCard from "./GlassCard";
+const projectIcons = [FaCreditCard, FaCloud, FaTerminal, FaDatabase];
 
 const projects = [
   {
@@ -60,7 +62,7 @@ const Projects = () => {
 
       <div className="projects-grid">
         {projects.map((project, index) => (
-          <motion.article
+          <GlassCard as="article"
             className="project-card"
             key={project.title}
             initial={{
@@ -77,8 +79,9 @@ const Projects = () => {
               delay: index * 0.08,
             }}
           >
-            <div className="project-number">
-              0{index + 1}
+            <div className={`project-cover project-cover-${index}`} aria-hidden="true">
+              {(() => { const Icon = projectIcons[index]; return <Icon />; })()}
+              <span className="project-number">0{index + 1}</span>
             </div>
 
             <div className="project-content">
@@ -96,7 +99,7 @@ const Projects = () => {
             </div>
 
             <div className="project-links">
-              <a
+              {project.github !== "#" ? <a
                 href={project.github}
                 target="_blank"
                 rel="noreferrer"
@@ -104,9 +107,9 @@ const Projects = () => {
               >
                 <FaGithub />
                 Code
-              </a>
+              </a> : <span className="unavailable-link">Code link coming soon</span>}
 
-              <a
+              {project.live !== "#" ? <a
                 href={project.live}
                 target="_blank"
                 rel="noreferrer"
@@ -114,9 +117,9 @@ const Projects = () => {
               >
                 <FaExternalLinkAlt />
                 Live
-              </a>
+              </a> : <span className="unavailable-link">Preview coming soon</span>}
             </div>
-          </motion.article>
+          </GlassCard>
         ))}
       </div>
     </section>

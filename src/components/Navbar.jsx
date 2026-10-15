@@ -1,147 +1,25 @@
-// src/components/Navbar.jsx
-
-import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-const sections = [
-  "home",
-  "about",
-  "experience",
-  "skills",
-  "projects",
-  "devops",
-  "contact",
-];
-
-const Navbar = () => {
-  const [visible, setVisible] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
-
-  const lastScrollY = useRef(0);
-
+const items = [["home", "Home"], ["about", "About"], ["experience", "Experience"], ["skills", "Skills"], ["projects", "Projects"], ["devops", "DevOps Lab"], ["contact", "Contact"]];
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("home");
+  const toggle = useRef();
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Show navbar at top
-      if (currentScrollY < 80) {
-        setVisible(true);
-      }
-      // Show navbar when scrolling up
-      else if (currentScrollY < lastScrollY.current) {
-        setVisible(true);
-      }
-      // Hide navbar when scrolling down
-      else if (!menuOpen) {
-        setVisible(false);
-      }
-
-      lastScrollY.current = currentScrollY;
-
-      // Detect active section
-      const scrollPosition = currentScrollY + 180;
-
-      for (const sectionId of sections) {
-        const section = document.getElementById(sectionId);
-
-        if (!section) continue;
-
-        const top = section.offsetTop;
-        const bottom = top + section.offsetHeight;
-
-        if (
-          scrollPosition >= top &&
-          scrollPosition < bottom
-        ) {
-          setActiveSection(sectionId);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
-
-    handleScroll();
-
-    return () => {
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
-    };
-  }, [menuOpen]);
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
-
-  const navItems = [
-    ["home", "Home"],
-    ["about", "About"],
-    ["experience", "Experience"],
-    ["skills", "Skills"],
-    ["projects", "Projects"],
-    ["devops", "DevOps Lab"],
-    ["contact", "Contact"],
-  ];
-
-  return (
-    <motion.nav
-      className="navbar"
-      animate={{
-        y: visible ? 0 : -100,
-      }}
-      transition={{
-        duration: 0.3,
-        ease: "easeInOut",
-      }}
-    >
-      <a
-        href="#home"
-        className="logo"
-        onClick={closeMenu}
-      >
-        TM<span>.</span>
-      </a>
-
-      <ul
-        className={`nav-links ${
-          menuOpen ? "nav-open" : ""
-        }`}
-      >
-        {navItems.map(([id, label]) => (
-          <li key={id}>
-            <a
-              href={`#${id}`}
-              onClick={closeMenu}
-              className={
-                activeSection === id
-                  ? "active"
-                  : ""
-              }
-            >
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        className="menu-button"
-        onClick={() =>
-          setMenuOpen((current) => !current)
-        }
-        aria-label="Toggle navigation"
-        aria-expanded={menuOpen}
-      >
-        {menuOpen ? <FaTimes /> : <FaBars />}
-      </button>
-    </motion.nav>
-  );
-};
-
-export default Navbar;
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) setActive(entry.target.id); });
+    }, { rootMargin: "-15% 0px -65% 0px" });
+    items.forEach(([id]) => { const section = document.getElementById(id); if (section) observer.observe(section); });
+    const resize = () => { if (window.innerWidth > 900) setOpen(false); };
+    window.addEventListener("resize", resize);
+    return () => { observer.disconnect(); window.removeEventListener("resize", resize); };
+  }, []);
+  return <nav className="navbar" aria-label="Main navigation" onKeyDown={event => { if (event.key === "Escape") { setOpen(false); toggle.current?.focus(); } }}>
+    <a href="#home" className="logo" onClick={() => setOpen(false)} aria-label="Tebogo Moremi home">TM<span>.</span><small>DEVELOPER PORTFOLIO</small></a>
+    <ul id="main-navigation" className={`nav-links ${open ? "nav-open" : ""}`}>
+      {items.map(([id, label]) => <li key={id}><a href={`#${id}`} className={active === id ? "active" : ""} aria-current={active === id ? "location" : undefined} onClick={() => setOpen(false)}>{label}{id === "contact" && <span> ↗</span>}</a></li>)}
+    </ul>
+    <button ref={toggle} className="menu-button" onClick={() => setOpen(value => !value)} aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} aria-controls="main-navigation">{open ? <FaTimes /> : <FaBars />}</button>
+  </nav>;
+}

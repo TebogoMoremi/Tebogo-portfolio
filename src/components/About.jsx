@@ -1,75 +1,33 @@
 import { motion } from "framer-motion";
+import { FaCode, FaCloud, FaExchangeAlt, FaBookOpen } from "react-icons/fa";
+import GlassCard from "./GlassCard";
 
-const About = () => {
-  return (
-    <section id="about" className="about-section">
-      <motion.div
-        className="section-heading"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <p className="section-label">About Me</p>
+const strengths = [
+  { title: "Software Development", icon: FaCode, text: "Frontend interfaces, backend services and database-driven applications." },
+  { title: "Cloud & DevOps", icon: FaCloud, text: "Docker, AWS, Kubernetes and CI/CD—from a local build to a deployed service." },
+  { title: "Integration & Testing", icon: FaExchangeAlt, text: "Connecting REST and SOAP services, working with data, and testing API contracts." },
+  { title: "Continuous Learning", icon: FaBookOpen, text: "Continuing to develop my engineering practice across cloud, automation and secure software delivery." },
+];
 
-        <h2>
-          Building software that is
-          <span> practical, scalable and cloud-ready.</span>
-        </h2>
-      </motion.div>
-
-      <div className="about-grid">
-        <motion.div
-          className="about-card"
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <p>
-            I am a software developer focused on building modern web
-            applications, backend services and cloud-ready systems.
-          </p>
-
-          <p>
-            My experience includes frontend development, backend APIs,, relational and non-relational
-            databases, system integration, testing and DevOps technologies.
-          </p>
-
-          <p>
-            I enjoy working with technologies such as React, Angular,
-            C#, Java, Docker, Kubernetes, AWS, Talend and SoapUI.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="about-stats"
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="stat-card">
-            <span>01</span>
-            <h3>Software Development</h3>
-            <p>Frontend, backend and database development.</p>
-          </div>
-
-          <div className="stat-card">
-            <span>02</span>
-            <h3>DevOps & Cloud</h3>
-            <p>Docker, Kubernetes, AWS, EKS and CI/CD.</p>
-          </div>
-
-          <div className="stat-card">
-            <span>03</span>
-            <h3>Integration</h3>
-            <p>Talend, ETL, SOAP, REST APIs and SoapUI.</p>
-          </div>
-        </motion.div>
+export default function About() {
+  return <section id="about" className="about-section">
+    <motion.div className="section-heading" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+      <p className="section-label">About me</p>
+      <h2>More than just<br /><span>writing code.</span></h2>
+    </motion.div>
+    <div className="about-grid">
+      <div className="about-story">
+        <p className="about-lead">I like understanding how the pieces fit together.</p>
+        <p>The interface someone uses. The API behind it. The infrastructure that keeps it running. Working across those layers is what draws me to software engineering.</p>
+        <p>My experience spans frontend and backend development, relational and non-relational databases, system integration, testing and DevOps.</p>
+        <p>I work with React, Angular, C#, Java, Docker and AWS, alongside integration tools like Talend and SoapUI. Each project is a chance to sharpen how I build, test and troubleshoot software.</p>
+        <a className="text-link about-link" href="#experience">Follow my experience <span>↗</span></a>
       </div>
-    </section>
-  );
-};
-
-export default About;
+      <div className="about-strengths">
+        {strengths.map(({ title, icon: Icon, text }, index) => <GlassCard as="article" className="strength-card" key={title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: index * 0.04 }}>
+          <span className="card-icon"><Icon /></span><h3>{title}</h3><p>{text}</p>
+        </GlassCard>)}
+      </div>
+    </div>
+  </section>;
+}

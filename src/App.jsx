@@ -8,13 +8,17 @@ import DevOpsLab from "./components/DevOpsLab";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AIChat from "./components/AIChat";
+import SectionAtmosphere from "./components/SectionAtmosphere";
+import { MotionConfig } from "framer-motion";
 
 function App() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <Navbar />
+      <SectionAtmosphere />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <About />
         <Experience />
@@ -26,7 +30,7 @@ function App() {
 
       <Footer />
       <AIChat />
-    </>
+    </MotionConfig>
   );
 }
 
