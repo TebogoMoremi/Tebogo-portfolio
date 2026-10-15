@@ -1,4 +1,5 @@
-import { FaArrowRight, FaDownload, FaGithub, FaLinkedin } from "react-icons/fa";
+import { whatsappUrl } from "./WhatsAppButton";
+import { FaArrowRight, FaDownload, FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import SceneViewport from "../three/SceneViewport";
 import { useRef } from "react";
 
@@ -17,7 +18,7 @@ export default function Hero() {
     <section id="home" className="hero" ref={heroRef} onPointerMove={trackPointer} onPointerLeave={() => { pointerRef.current.inside = false; }}>
       <SceneViewport kind="hero" label="A calm starfield surrounding a floating laptop, cloud and technology icons" heroRef={heroRef} visualRef={visualRef} pointerRef={pointerRef} />
       <div className="hero-content">
-        <div className="hero-status"><span className="status-dot" /> Open to development & DevOps opportunities</div>
+        <div className="hero-status"><span className="status-dot" /> Full-stack development · Backend · Cloud</div>
         <p className="hero-intro">Hi, I’m</p>
         <h1>Tebogo<br /><span>Moremi.</span></h1>
         <h2>Software Developer<span>Full-Stack & Cloud Engineering</span></h2>
@@ -25,13 +26,14 @@ export default function Hero() {
         <p className="hero-description">I enjoy turning ideas into working applications—building interfaces and APIs, connecting systems, and getting them running with Docker and AWS.</p>
         <div className="hero-tech-stack">{["React", "Angular", "Java", "C#", "SQL", "Docker", "AWS", "CI/CD"].map(skill => <span key={skill}>{skill}</span>)}</div>
         <div className="hero-buttons">
-          <a href="#projects" className="primary-button">Explore My Work <FaArrowRight /></a>
+          <a href="#projects" className="primary-button">Explore Projects <FaArrowRight /></a>
           <a href="/Tebogo-Moremi-CV.pdf" className="secondary-button" download><FaDownload /> Download CV</a>
         </div>
         <div className="hero-social-row">
           <a href="#contact" className="text-link">Let's Talk <span>↗</span></a><span className="social-divider" />
           <a href="https://github.com/TebogoMoremi" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><FaGithub /></a>
           <a href="https://www.linkedin.com/in/tebogo-herrold-moremi-782746157/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedin /></a>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat with Tebogo on WhatsApp"><FaWhatsapp /></a>
         </div>
       </div>
       <div className="hero-visual" ref={visualRef}>

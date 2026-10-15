@@ -7,7 +7,7 @@ import Projects from "./components/Projects";
 import DevOpsLab from "./components/DevOpsLab";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import AIChat from "./components/AIChat";
+import ContactDock from "./components/ContactDock";
 import SectionAtmosphere from "./components/SectionAtmosphere";
 import { MotionConfig } from "framer-motion";
 
@@ -29,7 +29,7 @@ function App() {
       </main>
 
       <Footer />
-      <AIChat />
+      <ContactDock />
     </MotionConfig>
   );
 }

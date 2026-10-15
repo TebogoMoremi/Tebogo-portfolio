@@ -11,6 +11,7 @@ export default function ArchitectureExplorer() {
       <SceneViewport kind="architecture" label="CloudFront branches to S3 and the load balancer, then ECS, Spring Boot, local knowledge and Gemini. CloudWatch sends alerts through SNS." selected={selected} onSelect={setSelected} />
       <aside className="service-detail"><span className="section-label">EXPLORE A SERVICE</span><div className="service-controls">{services.map(item => <button key={item.id} aria-pressed={selected === item.id} onClick={() => setSelected(item.id)}>{item.name}</button>)}</div><div className="service-description" aria-live="polite"><h3>{service.name}</h3><p>{service.description}</p></div></aside>
     </div>
+    <p className="architecture-status">Deployment note: the current workflow publishes the frontend to S3 and CloudFront and images to ECR. Automatic ECS/Fargate deployment is disabled; this diagram describes the configured backend architecture, not its live availability.</p>
     <div className="architecture-readable" aria-label="Readable architecture diagram">
       <h3>Follow a request</h3>
       <p className="request-entry">User <span>→</span> CloudFront</p>

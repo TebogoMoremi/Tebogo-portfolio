@@ -1,6 +1,6 @@
 import { FaWhatsapp } from "react-icons/fa";
 
-export const whatsappMessage = "Hi Tebogo, I came across your developer portfolio and would like to connect with you regarding a software development opportunity.";
+export const whatsappMessage = "Hi Tebogo, I came across your developer portfolio and would like to connect regarding a software development opportunity.";
 export const whatsappUrl = `https://wa.me/27782708321?text=${encodeURIComponent(whatsappMessage)}`;
 
 export default function WhatsAppButton({ floating = false }) {

@@ -5,7 +5,7 @@ import GlassCard from "./GlassCard";
 const strengths = [
   { title: "Software Development", icon: FaCode, text: "Frontend interfaces, backend services and database-driven applications." },
   { title: "Cloud & DevOps", icon: FaCloud, text: "Docker, AWS, Kubernetes and CI/CD—from a local build to a deployed service." },
-  { title: "Integration & Testing", icon: FaExchangeAlt, text: "Connecting REST and SOAP services, working with data, and testing API contracts." },
+  { title: "Backend & Integrations", icon: FaExchangeAlt, text: "Connecting REST and SOAP services, working with data, and testing API contracts." },
   { title: "Continuous Learning", icon: FaBookOpen, text: "Continuing to develop my engineering practice across cloud, automation and secure software delivery." },
 ];
 

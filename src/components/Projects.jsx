@@ -3,6 +3,13 @@ import { FaGithub, FaExternalLinkAlt, FaCreditCard, FaCloud, FaTerminal, FaDatab
 import GlassCard from "./GlassCard";
 const projectIcons = [FaCreditCard, FaCloud, FaTerminal, FaDatabase];
 
+const projectFocus = [
+  ["Account management", "A responsive React interface for accounts and transactions, connected through a REST API."],
+  ["Containerized transactions", "A Java backend designed for Docker, Kubernetes and AWS EKS deployment."],
+  ["Troubleshooting logs", "Python automation searches large log files for CPS errors and produces readable reports."],
+  ["Managing visitor records", "A Node.js API for creating, updating and retrieving visitor data in PostgreSQL. Jest is included in the project stack."],
+];
+
 const projects = [
   {
     title: "Banking Application",
@@ -81,6 +88,7 @@ const Projects = () => {
           >
             <div className={`project-cover project-cover-${index}`} aria-hidden="true">
               {(() => { const Icon = projectIcons[index]; return <Icon />; })()}
+              <span className="project-visual-label">PROJECT CONCEPT</span>
               <span className="project-number">0{index + 1}</span>
             </div>
 
@@ -98,6 +106,13 @@ const Projects = () => {
               </div>
             </div>
 
+            <details className="project-details">
+              <summary>Engineering overview</summary>
+              <h4>{projectFocus[index][0]}</h4>
+              <p>{projectFocus[index][1]}</p>
+              <p className="technical-note">Repository and demo links are not yet published here.</p>
+            </details>
+
             <div className="project-links">
               {project.github !== "#" ? <a
                 href={project.github}
@@ -107,7 +122,7 @@ const Projects = () => {
               >
                 <FaGithub />
                 Code
-              </a> : <span className="unavailable-link">Code link coming soon</span>}
+              </a> : <span className="unavailable-link">Code not linked</span>}
 
               {project.live !== "#" ? <a
                 href={project.live}
@@ -117,7 +132,7 @@ const Projects = () => {
               >
                 <FaExternalLinkAlt />
                 Live
-              </a> : <span className="unavailable-link">Preview coming soon</span>}
+              </a> : <span className="unavailable-link">Demo not linked</span>}
             </div>
           </GlassCard>
         ))}
