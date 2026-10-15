@@ -1754,6 +1754,103 @@ section:not(.hero) {
   }
 }
 
+/* Shared, section-aware atmosphere. Only one ambient renderer is mounted. */
+.section-atmosphere {
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(ellipse at 85% 40%,#3b82f610,transparent 65%);
+}
+.section-atmosphere .scene-viewport { height:100%; }
+.section-atmosphere .scene-art { mask-image:linear-gradient(transparent,#000 15%,#000 80%,transparent); }
+.section-atmosphere .scene-pause,.section-atmosphere .scene-mode { position:fixed; left:14px; right:auto; bottom:14px; pointer-events:auto; z-index:30; }
+.ambient-fallback { width:100%; height:100%; background:radial-gradient(ellipse at 80% 35%,#3b82f612,transparent 65%); }
+main,.footer { position:relative; z-index:1; }
+main { pointer-events:none; }
+main > section { pointer-events:auto; }
+.section-atmosphere { z-index:1; }
+main { z-index:2; }
+.section-atmosphere .scene-pause { opacity:.8; }
+.ambient-motion-control { position:fixed; bottom:18px; left:14px; right:auto; z-index:1100; pointer-events:auto; }
+.about-section,.skills-section,.devops-section { border-top-color:transparent; }
+section:not(.hero) { position:relative; }
+section:not(.hero)::before { content:""; position:absolute; top:0; left:6.5%; right:6.5%; height:1px; background:linear-gradient(90deg,transparent,var(--border-subtle),transparent); }
+
+/* Cards preserve semantic HTML and share a restrained 2.5 degree pointer tilt. */
+.glass-card {
+  position:relative;
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-card);
+  background:linear-gradient(135deg,#17243de8,#101b33ec);
+  box-shadow:0 15px 35px #0206141c;
+  transition:border-color .25s,box-shadow .25s,transform .2s;
+  transform-style:preserve-3d;
+}
+.glass-card::before { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:radial-gradient(300px circle at var(--light-x,50%) var(--light-y,0%),#67e8f914,transparent 65%); opacity:0; transition:opacity .25s; }
+.glass-card:focus-visible,.glass-card:focus-within { border-color:var(--accent-primary); box-shadow:0 0 0 1px #22d3ee44,0 14px 35px #02061430; }
+@media(hover:hover) and (pointer:fine) {
+  .glass-card:hover { border-color:#5f92bb; box-shadow:0 18px 40px #02061445; }
+  .glass-card:hover::before { opacity:1; }
+}
+.card-icon { display:inline-grid; place-items:center; width:42px; height:42px; border:1px solid #3b82f632; border-radius:12px; color:#7dd3fc; background:linear-gradient(135deg,#3b82f61c,#22d3ee09); font-size:19px; }
+.about-grid { grid-template-columns:.9fr 1.1fr; gap:55px; align-items:start; }
+.about-story p { margin-bottom:20px; font-size:14px; }
+.about-story .about-lead { font-size:23px; color:var(--text-primary); line-height:1.45; letter-spacing:-.5px; }
+.about-link { display:inline-block; padding:12px 0; color:var(--accent-primary); }
+.about-strengths { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.strength-card { padding:25px; }
+.strength-card h3 { font-size:16px; font-weight:500; margin:20px 0 10px; }
+.strength-card p { font-size:12px; line-height:1.8; }
+.strength-card:nth-child(2) .card-icon { color:#a5b4fc; }
+.strength-card:nth-child(3) .card-icon { color:#76d5d1; }
+.strength-card:nth-child(4) .card-icon { color:#c4b5fd; }
+.experience-timeline { position:relative; }
+.timeline-progress { position:absolute; left:-1px; top:0; bottom:0; width:2px; transform-origin:top; background:linear-gradient(#22d3ee,#3b82f6,#a78bfa); box-shadow:0 0 14px #22d3ee30; }
+.experience-content:hover { transform:none; }
+.skill-category h3 { display:flex; align-items:center; gap:12px; line-height:1.5; }
+.skill-category .card-icon { flex:0 0 36px; width:36px; height:36px; font-size:17px; }
+.skill-category { padding:25px; }
+.skill-tags button { min-height:38px; }
+.project-cover { display:flex; align-items:center; justify-content:space-between; position:relative; height:126px; margin:-8px -8px 25px; padding:24px; border:1px solid #3b82f622; border-radius:14px; background:linear-gradient(130deg,#3b82f620,#22d3ee08),repeating-linear-gradient(90deg,transparent 0 35px,#6bbdeb08 35px 36px); }
+.project-cover>svg { font-size:35px; color:#83c7ee; }
+.project-cover .project-number { padding:0; color:#b3c7e2; }
+.project-cover-1 { background-color:#a78bfa0c; }
+.project-cover-2 { background-color:#22d3ee08; }
+.project-cover-3 { background-color:#3b82f60c; }
+.project-links { flex-wrap:wrap; gap:8px 18px; }
+.service-catalog { margin:45px 0; }
+.service-catalog .devops-subheading h3 { margin-bottom:12px; }
+.service-catalog .devops-subheading>p:last-child { font-size:13px; margin-bottom:25px; }
+.service-card-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.service-card { display:grid; grid-template-columns:42px 1fr; align-items:center; gap:5px 16px; padding:21px; text-align:left; }
+.service-card .card-icon { grid-row:span 2; }
+.service-card-title { font-size:14px; font-weight:600; }
+.service-card-summary { color:var(--text-muted); font-size:11px; line-height:1.6; }
+.service-card[aria-pressed=true] { border-color:#22d3ee88; background:linear-gradient(135deg,#1b3651,#14243b); }
+.catalog-detail { min-height:114px; padding:25px; border-left:2px solid var(--accent-primary); background:#101b33d9; margin-top:20px; border-radius:0 14px 14px 0; }
+.catalog-detail h4 { font-weight:500; color:var(--text-primary); margin-bottom:10px; }
+.catalog-detail p { font-size:13px; }
+@media(max-width:900px) {
+  .about-grid { grid-template-columns:1fr; gap:30px; }
+  .about-story { max-width:620px; }
+  .service-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:600px) {
+  .strength-card { padding:19px; }
+  .strength-card h3 { font-size:14px; }
+  .service-card-grid { grid-template-columns:1fr; }
+  .service-card { padding:18px; }
+  .section-atmosphere .scene-pause,.section-atmosphere .scene-mode { font-size:8px; padding:7px; min-height:32px; left:8px; bottom:18px; }
+  .skill-category h3 { align-items:flex-start; flex-direction:column; }
+  .project-cover { height:105px; }
+}
+@media(max-width:374px) {
+  .about-strengths { grid-template-columns:1fr; }
+}
+@media(hover:none) {
+  .project-card:hover,.experience-content:hover,.contact-link-card:hover,.primary-button:hover,.secondary-button:hover { transform:none; }
+}
 @media(prefers-reduced-motion:reduce) {
   html {
     scroll-behavior:auto

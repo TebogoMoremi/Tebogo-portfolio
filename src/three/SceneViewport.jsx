@@ -1,6 +1,7 @@
 import { Component, Suspense, lazy, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { FaLaptopCode, FaCloud } from "react-icons/fa";
+import { createPortal } from "react-dom";
 
 const SceneCanvas = lazy(() => import("./SceneCanvas"));
 class SceneBoundary extends Component {
@@ -31,12 +32,13 @@ export default function SceneViewport({ kind, label, ...props }) {
     document.addEventListener("visibilitychange", visibility);
     return () => { observer.disconnect(); query.removeEventListener("change", resize); document.removeEventListener("visibilitychange", visibility); };
   }, []);
-  const fallback = <StaticCore />;
+  const fallback = kind === "ambient" ? <div className="ambient-fallback" /> : <StaticCore />;
+  const motionControl = !reduced && !limited ? <button className={`scene-pause ${kind === "ambient" ? "ambient-motion-control" : ""}`} onClick={() => setPaused(value => !value)} aria-pressed={paused}>{kind === "ambient" ? (paused ? "Resume background" : "Pause background") : (paused ? "▶ Resume motion" : "Ⅱ Pause motion")}</button> : null;
   return <div className={`scene-viewport scene-${kind}`} ref={host}>
-    <div className="scene-art" role={kind === "hero" ? undefined : "img"} aria-hidden={kind === "hero" ? true : undefined} aria-label={kind === "hero" ? undefined : label}>
+    <div className="scene-art" role={kind === "hero" || kind === "ambient" ? undefined : "img"} aria-hidden={kind === "hero" || kind === "ambient" ? true : undefined} aria-label={kind === "hero" || kind === "ambient" ? undefined : label}>
       {visible && !reduced && !limited ? <SceneBoundary fallback={fallback}><Suspense fallback={fallback}><SceneCanvas kind={kind} compact={compact} active={pageVisible && !paused} {...props} /></Suspense></SceneBoundary> : fallback}
     </div>
-    {!reduced && !limited && <button className="scene-pause" onClick={() => setPaused(value => !value)} aria-pressed={paused}>{paused ? "▶ Resume motion" : "Ⅱ Pause motion"}</button>}
+    {kind === "ambient" ? createPortal(motionControl, document.body) : motionControl}
     {(reduced || limited) && <span className="scene-mode">Static view · reduced motion</span>}
   </div>;
 }

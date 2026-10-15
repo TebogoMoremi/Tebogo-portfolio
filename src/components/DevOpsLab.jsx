@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import ArchitectureExplorer from "./ArchitectureExplorer";
+import ServiceCatalog from "./ServiceCatalog";
 
 import {
   FaGithub,
@@ -120,6 +121,7 @@ const DevOpsLab = () => {
       </motion.div>
 
       <ArchitectureExplorer />
+      <ServiceCatalog />
 
       {/* Deployment pipeline, separate from runtime request architecture. */}
       <motion.div

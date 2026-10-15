@@ -1,4 +1,21 @@
-# Portfolio redesign — 14 October 2026
+# Portfolio redesign — updated 15 October 2026
+
+## Completed: section polish and shared interactions
+
+Added a reusable GlassCard component with restrained mouse tilt, pointer highlights, keyboard focus treatment and reduced-motion support. About now combines the personal story with four strengths; Experience gains scroll progress; Skills gains clearer category headings; Projects gains recognizable cover symbols. Existing employment and project data are preserved.
+
+SectionAtmosphere uses one shared decorative renderer that changes with the reading section: sparse lavender forms for About, blue connections for Experience, cyan particles for Skills, a tilted grid for Projects, an infrastructure network for DevOps and quiet particles for Contact. AmbientScene limits particles to 72 on desktop and 24 on mobile, with bounded neighbor checks. The existing viewport wrapper supplies pause/resume, hidden-page suspension, reduced-motion/static fallbacks and offscreen cleanup. The background pause control is rendered outside the decorative layer so it remains accessible.
+
+ServiceCatalog adds nine selectable AWS and delivery service cards with readable descriptions alongside the existing architecture explorer. Responsive layouts collapse the story, strengths and service grids for smaller screens. No dependencies, backend code or infrastructure configuration were changed.
+
+Validation after these section changes:
+
+- Production build passed: main JavaScript 522.86 kB minified / 168.79 kB gzip; lazy renderer 924.12 kB / 247.51 kB gzip. Vite's bundle-size warning remains.
+- Lint passed without warnings; all three starfield motion tests passed; git diff whitespace checks passed.
+- Latest browser verification was blocked by the app's browser URL policy. No workaround was attempted. The earlier desktop/mobile browser results below apply to the earlier implementation, not to these new section changes.
+- Latest breakpoint rendering, physical GPU profiling, forced WebGL failure and live AI backend responses remain unverified. The earlier unavailable chat endpoint remains an outstanding integration check.
+
+New components: src/components/{GlassCard,SectionAtmosphere,ServiceCatalog}.jsx and src/three/AmbientScene.jsx. Updated App, About, Experience, Skills, Projects, DevOpsLab, SceneCanvas, SceneViewport and the shared stylesheet. Changes are saved on the existing feature branch; nothing was pushed, merged or deployed.
 
 ## Latest: interactive starfield and unified colors
 

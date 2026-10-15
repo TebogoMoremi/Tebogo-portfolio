@@ -2,10 +2,13 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import SceneViewport from "../three/SceneViewport";
 import { skillDescriptions } from "../data/skillDescriptions";
+import { FaReact, FaServer, FaDatabase, FaCloud, FaExchangeAlt, FaTools } from "react-icons/fa";
+import GlassCard from "./GlassCard";
+const categoryIcons = [FaReact, FaServer, FaDatabase, FaCloud, FaExchangeAlt, FaTools];
 
 const skillGroups = [
   {
-    title: "Frontend",
+    title: "Frontend Engineering",
     skills: [
       "React",
       "Angular",
@@ -19,7 +22,7 @@ const skillGroups = [
   },
 
   {
-    title: "Backend",
+    title: "Backend Engineering",
     skills: [
       "C#",
       "ASP.NET Core",
@@ -42,7 +45,7 @@ const skillGroups = [
   },
 
   {
-    title: "DevOps & Cloud",
+    title: "Cloud & DevOps",
     skills: [
       "Docker",
       "Kubernetes",
@@ -114,7 +117,7 @@ const Skills = () => {
       <p className="skills-list-label">THE COMPLETE STACK <span>Every skill, at a glance.</span></p>
       <div className="skills-grid">
         {skillGroups.map((group, groupIndex) => (
-          <motion.div
+          <GlassCard as="article"
             className="skill-category"
             key={group.title}
             initial={{
@@ -131,7 +134,7 @@ const Skills = () => {
               delay: groupIndex * 0.08,
             }}
           >
-            <h3>{group.title}</h3>
+            <h3><span className="card-icon">{(() => { const Icon = categoryIcons[groupIndex]; return <Icon />; })()}</span>{group.title}</h3>
 
             <div className="skill-tags">
               {group.skills.map((skill) => (
@@ -140,7 +143,7 @@ const Skills = () => {
                 </button>
               ))}
             </div>
-          </motion.div>
+          </GlassCard>
         ))}
       </div>
     </section>

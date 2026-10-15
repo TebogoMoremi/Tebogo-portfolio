@@ -1,4 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll } from "framer-motion";
+import { useRef } from "react";
+import GlassCard from "./GlassCard";
 
 import {
   FaCloud,
@@ -88,6 +90,9 @@ const experiences = [
 ];
 
 const Experience = () => {
+  const timeline = useRef(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: timeline, offset: ["start 75%", "end 75%"] });
   return (
     <section
       id="experience"
@@ -125,7 +130,8 @@ const Experience = () => {
         </p>
       </motion.div>
 
-      <div className="experience-timeline">
+      <div className="experience-timeline" ref={timeline}>
+        <motion.div className="timeline-progress" aria-hidden="true" style={{ scaleY: reduced ? 1 : scrollYProgress }} />
         {experiences.map(
           (experience, index) => (
             <motion.article
@@ -154,7 +160,7 @@ const Experience = () => {
                 </div>
               </div>
 
-              <div className="experience-content">
+              <GlassCard className="experience-content">
                 <div className="experience-header">
                   <div>
                     <span className="experience-type">
@@ -188,7 +194,7 @@ const Experience = () => {
                     )
                   )}
                 </div>
-              </div>
+              </GlassCard>
             </motion.article>
           )
         )}
