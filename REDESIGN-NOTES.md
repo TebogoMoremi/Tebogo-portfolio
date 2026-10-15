@@ -1,5 +1,27 @@
 # Portfolio redesign — 14 October 2026
 
+## Latest: interactive starfield and unified colors
+
+The existing laptop, cloud, orbiting logos, skills explorer and infrastructure objects are preserved. HeroComposition positions the existing objects inside the same full-hero canvas as Starfield. There is no overlapping background canvas. The original in-progress color edits were carried forward into the supplied navy/cyan/blue palette.
+
+Starfield uses one Points draw call, seeded natural distribution, three depth populations, soft radial point shaders, and preallocated position/brightness buffers. Desktop uses 480 stars; mobile uses 130. A 145px mouse influence radius produces small eased displacements (up to 18px before distance falloff), brightness changes and a decaying luminance trail. Layer drift and parallax give depth; leaving the hero eases displacement back. Touch input does not activate mouse effects. Constellation lines were intentionally omitted to keep the scene quiet and avoid additional connection work.
+
+The renderer remains lazy, DPR-capped, paused on demand and when the page is hidden, and unmounted offscreen. Reduced-motion/low-resource devices and WebGL failures use the static CSS starfield with laptop/cloud artwork. The hero artwork is hidden from assistive technology, while the pause control and all normal content remain accessible. Existing secondary scenes retain accessible descriptions and control lists.
+
+Colors are organized with reusable background, surface, accent, text, border and radius variables. Navy surfaces, blue buttons, cyan highlights, restrained violet and emerald availability indicators now carry through cards, navigation, badges, footer and chat. Headings, greeting, line spacing and sizing were refined using the existing system-font stack, without introducing remote font requests. Hero, About and Contact wording is more direct and personal; employment/project data is unchanged.
+
+Validation for this phase:
+
+- Production build passed; renderer chunk remains about 922 kB minified / 247 kB gzip and triggers Vite's existing size warning.
+- Lint passed without lint warnings.
+- `node --test tests/starfieldMotion.test.js`: 3 tests passed, covering repulsion/return, influence radius, and ambient touch behavior with buffer reuse.
+- Color calculations passed 4.5:1 for the five sampled text/background pairs: primary text 18.27, secondary 10.43, muted 6.04, cyan 10.58, blue button label 4.99. This is a targeted check, not a whole-site accessibility audit.
+- Browser: desktop 1280px and mobile 390px; one hero canvas, no measured horizontal page overflow, visible stars and centerpiece, pause/resume behavior and mobile chat verified. No console errors observed in these checks.
+- CV download completed through the browser. Prior chat endpoint unavailability remains unresolved; successful backend/Gemini responses were not re-verified in this phase.
+- No physical GPU profiling, forced WebGL failure, OS reduced-motion emulation or automated end-to-end pointer screenshot comparison was performed. Smooth return/displacement was checked with the pure motion tests; visual rendering was inspected in-browser.
+
+Files for this phase: index.html; src/index.css; src/chat.css; src/components/{Hero,About,Contact}.jsx; src/three/{HeroScene,SceneCanvas,SceneViewport,HeroComposition,Starfield}.jsx; src/three/starfieldMotion.js; tests/starfieldMotion.test.js; this report. Backend and infrastructure files remain untouched. See the final response or git log for the saved commit.
+
 ## Follow-up: warmer, tangible 3D
 
 Replaced the faceted core with a locally modelled laptop, code editor, keyboard and soft cloud. Restored recognizable technology logos in rounded tiles, reduced particles and simplified the orbital paths. Added soft warm/cool studio lighting. Architecture now uses miniature laptops, clouds, server racks, storage stacks and an envelope for alerts. Static fallback also uses laptop/cloud imagery. No downloaded models or new dependencies.

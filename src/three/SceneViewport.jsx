@@ -33,7 +33,7 @@ export default function SceneViewport({ kind, label, ...props }) {
   }, []);
   const fallback = <StaticCore />;
   return <div className={`scene-viewport scene-${kind}`} ref={host}>
-    <div className="scene-art" role="img" aria-label={label}>
+    <div className="scene-art" role={kind === "hero" ? undefined : "img"} aria-hidden={kind === "hero" ? true : undefined} aria-label={kind === "hero" ? undefined : label}>
       {visible && !reduced && !limited ? <SceneBoundary fallback={fallback}><Suspense fallback={fallback}><SceneCanvas kind={kind} compact={compact} active={pageVisible && !paused} {...props} /></Suspense></SceneBoundary> : fallback}
     </div>
     {!reduced && !limited && <button className="scene-pause" onClick={() => setPaused(value => !value)} aria-pressed={paused}>{paused ? "▶ Resume motion" : "Ⅱ Pause motion"}</button>}

@@ -18,8 +18,8 @@ const Contact = () => {
           </p>
 
           <h2>
-            Let&apos;s build something{" "}
-            <span>meaningful.</span>
+            Have a role in mind?{" "}
+            <span>Let&apos;s talk.</span>
           </h2>
 
           <p>

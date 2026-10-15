@@ -13,8 +13,8 @@ const About = () => {
         <p className="section-label">About Me</p>
 
         <h2>
-          Building software that is
-          <span> practical, scalable and cloud-ready.</span>
+          From the interface
+          <span> to the infrastructure.</span>
         </h2>
       </motion.div>
 
@@ -27,8 +27,8 @@ const About = () => {
           transition={{ duration: 0.6 }}
         >
           <p>
-            I am a software developer focused on building modern web
-            applications, backend services and cloud-ready systems.
+            I like understanding how the pieces fit together: the interface
+            someone uses, the API behind it, and the infrastructure that keeps it running.
           </p>
 
           <p>
@@ -37,8 +37,9 @@ const About = () => {
           </p>
 
           <p>
-            I enjoy working with technologies such as React, Angular,
-            C#, Java, Docker, Kubernetes, AWS, Talend and SoapUI.
+            I work with React, Angular, C#, Java, Docker and AWS, alongside
+            integration tools like Talend and SoapUI. Each project is a chance
+            to sharpen how I build, test and troubleshoot software.
           </p>
         </motion.div>
 

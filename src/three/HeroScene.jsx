@@ -53,7 +53,7 @@ export default function HeroScene({ compact, active, nodes = heroNodes, selected
     {[0, 1].map(i => <mesh key={i} rotation={[0, 0, i ? -0.27 : 0.27]} scale={[1, 0.72, 1]}>
       <torusGeometry args={[2.95 + i * 0.16, 0.009, 6, 100]} /><meshBasicMaterial color={i ? "#a698ce" : "#74bdcf"} transparent opacity={i ? 0.22 : 0.35} />
     </mesh>)}
-    <points><bufferGeometry><bufferAttribute attach="attributes-position" args={[positions, 3]} /></bufferGeometry><pointsMaterial color="#bed7e5" size={0.018} transparent opacity={0.4} /></points>
+    {kind !== "hero" && <points><bufferGeometry><bufferAttribute attach="attributes-position" args={[positions, 3]} /></bufferGeometry><pointsMaterial color="#bed7e5" size={0.018} transparent opacity={0.4} /></points>}
     {displayed.map((name, index) => <TechnologyNode key={name} name={name} index={index} count={displayed.length} active={active} selected={selected === name} onSelect={onSelect} />)}
   </group>;
 }

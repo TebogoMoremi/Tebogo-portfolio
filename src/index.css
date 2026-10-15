@@ -1,13 +1,28 @@
 @import "./chat.css";
 :root {
   font-family:Inter,"Segoe UI",sans-serif;
-  color:#edf2fa;
-  background:#070d18;
+  color:var(--text-primary);
+  background:var(--bg-primary);
   font-synthesis:none;
-  --muted:#a0aec3;
-  --cyan:#78ddf5;
-  --border:rgba(149,184,218,.16);
-  --panel:#0d1625;
+  --bg-primary:#080f1f;
+  --bg-secondary:#101b33;
+  --bg-card:#17243d;
+  --accent-primary:#22d3ee;
+  --accent-secondary:#3b82f6;
+  --accent-tertiary:#a78bfa;
+  --text-primary:#f8fafc;
+  --text-secondary:#cbd5e1;
+  --text-muted:#94a3b8;
+  --success:#34d399;
+  --border-subtle:rgba(148,163,184,.18);
+  --radius-card:20px;
+  --radius-button:12px;
+  --muted:var(--text-secondary);
+  --cyan:var(--accent-primary);
+  --border:var(--border-subtle);
+  --accent-blue:var(--accent-secondary);
+  --accent-lilac:var(--accent-tertiary);
+  --panel:var(--bg-card);
   --mono:"Cascadia Code",Consolas,monospace
 }
 
@@ -101,7 +116,7 @@ section:not(.hero) {
   align-items:center;
   justify-content:space-between;
   z-index:1000;
-  background:#070d18e8;
+  background:#0a1023e8;
   backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border)
 }
@@ -171,7 +186,7 @@ section:not(.hero) {
   grid-template-columns:1fr 1.05fr;
   align-items:center;
   gap:22px;
-  background:radial-gradient(ellipse at 77% 45%,#14355055,transparent 43%)
+  background:radial-gradient(ellipse at 78% 40%,#345cba35,transparent 47%),radial-gradient(ellipse at 48% 85%,#6d4bd01a,transparent 55%)
 }
 
 .hero-content {
@@ -197,7 +212,7 @@ section:not(.hero) {
   height:6px;
   flex:0 0 6px;
   border-radius:50%;
-  background:#70dfb6;
+  background:var(--success);
   box-shadow:0 0 12px #70dfb650
 }
 
@@ -217,7 +232,7 @@ section:not(.hero) {
 }
 
 .hero h1 span {
-  background:linear-gradient(110deg,#f2f8ff 5%,#92def3 70%,#818df1);
+  background:linear-gradient(110deg,#a9c6ff 5%,#8aaaf8 48%,#83e3d0 95%);
   color:transparent;
   background-clip:text
 }
@@ -420,11 +435,11 @@ section:not(.hero) {
   min-width: 58px;
   min-height: 64px;
   padding: 10px 12px;
-  border: 1px solid #97bed638;
+  border: 1px solid #9eb9ef38;
   border-radius: 14px;
-  background: linear-gradient(145deg, #25374af5, #112032f5);
+  background: linear-gradient(145deg, #293b5cf5, #15223df5);
   box-shadow: inset 0 1px 0 #ffffff16, 0 8px 18px #02091240;
-  color: #d5e3ef;
+  color: #e5edff;
   font: 9px var(--mono);
   white-space: nowrap;
   transition: border-color .2s, background .2s, box-shadow .2s;
@@ -436,7 +451,7 @@ section:not(.hero) {
 }
 .technology-object:hover, .technology-object.selected {
   border-color: var(--tech-color);
-  background: linear-gradient(145deg, #314b60, #172b3e);
+  background: linear-gradient(145deg, #354d73, #1c3050);
   box-shadow: inset 0 1px 0 #ffffff25, 0 8px 22px #02091250;
 }
 .static-workspace {
@@ -549,7 +564,7 @@ section:not(.hero) {
 }
 
 .section-heading h2 span,.contact-content h2 span {
-  color:#9aaec6
+  color:#b2c4e4
 }
 
 .section-heading>p:not(.section-label) {
@@ -655,7 +670,7 @@ section:not(.hero) {
 
 .experience-content {
   padding:28px 32px;
-  background:linear-gradient(115deg,#101c2c,#0b1320);
+  background:linear-gradient(115deg,var(--bg-card),var(--bg-secondary));
   border:1px solid var(--border);
   border-radius:8px;
   transition:border-color .25s,transform .25s
@@ -713,7 +728,7 @@ section:not(.hero) {
   border-radius:4px;
   background:#10203055;
   padding:6px 9px;
-  color:#b0c2d7;
+  color:var(--text-secondary);
   font:10px var(--mono)
 }
 
@@ -723,7 +738,7 @@ section:not(.hero) {
   border:1px solid var(--border);
   border-radius:10px;
   overflow:hidden;
-  background:radial-gradient(ellipse at 80% 40%,#17344c66,transparent 60%),#0b1421
+  background:radial-gradient(ellipse at 80% 40%,#17344c66,transparent 60%),var(--bg-secondary)
 }
 
 .skills-explorer-copy {
@@ -778,7 +793,7 @@ section:not(.hero) {
 .category-controls button[aria-pressed=true] {
   border-color:#4facce55;
   background:#26506a30;
-  color:#a6edff
+  color:var(--text-primary)
 }
 
 .skill-description {
@@ -827,7 +842,7 @@ section:not(.hero) {
   padding:24px;
   border:1px solid var(--border);
   border-radius:6px;
-  background:#0c1622
+  background:var(--bg-card)
 }
 
 .skill-category h3 {
@@ -860,7 +875,7 @@ section:not(.hero) {
   padding:32px;
   border:1px solid var(--border);
   border-radius:8px;
-  background:linear-gradient(130deg,#102032,#0a121e);
+  background:linear-gradient(130deg,#192b49,var(--bg-secondary));
   transition:transform .25s,border-color .25s
 }
 
@@ -915,7 +930,7 @@ section:not(.hero) {
 
 .architecture-explorer {
   border:1px solid #47708750;
-  background:#0c1725;
+  background:var(--bg-secondary);
   border-radius:9px;
   overflow:hidden;
   margin-bottom:36px
@@ -960,10 +975,10 @@ section:not(.hero) {
 }
 
 .service-controls button {
-  background:#101e30;
+  background:var(--bg-card);
   border:1px solid var(--border);
   border-radius:4px;
-  color:#a8bdd4;
+  color:var(--text-secondary);
   font-size:10px;
   padding:8px;
   min-height:34px
@@ -1180,7 +1195,7 @@ section:not(.hero) {
 .devops-stack {
   padding:25px;
   margin-top:30px;
-  background:#0d1928;
+  background:var(--bg-card);
   border:1px solid var(--border);
   border-radius:6px
 }
@@ -1222,7 +1237,7 @@ section:not(.hero) {
   padding:20px;
   border:1px solid var(--border);
   border-radius:6px;
-  background:#0d1928;
+  background:var(--bg-card);
   transition:border-color .2s,transform .2s
 }
 
@@ -1279,7 +1294,7 @@ section:not(.hero) {
 
 .ai-chat-toggle {
   z-index:1100;
-  background:#102033;
+  background:var(--bg-card);
   border-color:#497e98;
   font-size:12px;
   box-shadow:0 8px 30px #0004
@@ -1305,6 +1320,65 @@ section:not(.hero) {
   background:#205375
 }
 
+/* Shared surfaces and interaction colors. */
+.primary-button {
+  background:linear-gradient(120deg,#245bce,#3264df);
+  color:var(--text-primary);
+  border:1px solid #6397f8;
+  box-shadow:0 8px 24px #245bce25;
+}
+.primary-button:hover { box-shadow:0 10px 30px #3b82f640; }
+.secondary-button { background:var(--bg-secondary); border-color:#425776; color:var(--text-primary); }
+.primary-button,.secondary-button { border-radius:var(--radius-button); }
+.experience-content,.skill-category,.project-card,.skills-explorer,.architecture-explorer,.devops-architecture,.contact-link-card {
+  border-radius:var(--radius-card);
+}
+.skill-category,.contact-link-card { background:linear-gradient(135deg,var(--bg-card),var(--bg-secondary)); }
+.section-heading h2 span,.contact-content h2 span { color:#a7bfde; }
+.hero h1 span { background-image:linear-gradient(110deg,#bce6ff 5%,#75b6fb 50%,#9ca8f9 95%); }
+.technology-object {
+  background:linear-gradient(145deg,color-mix(in srgb,var(--tech-color) 14%,var(--bg-card)),var(--bg-secondary));
+  border-color:color-mix(in srgb,var(--tech-color) 35%,transparent);
+}
+.hero-status { color:#b7efda; border-color:#34d39940; background:#163b352e; }
+.nav-links a { position:relative; }
+.nav-links a::after { content:""; position:absolute; left:0; right:0; bottom:4px; height:1px; background:var(--accent-primary); transform:scaleX(0); transform-origin:left; transition:transform .2s; }
+.nav-links a:hover::after,.nav-links a.active::after { transform:scaleX(1); }
+.nav-links li:last-child a::after { display:none; }
+.ai-chat-panel,.ai-chat-header,.ai-chat-input,.ai-chat-footer { background:var(--bg-secondary); }
+.ai-chat-panel { max-width:calc(100% - 28px); }
+.ai-message-assistant { background:var(--bg-card); }
+.ai-chat-input button,.ai-message-user { background:#245bce; color:var(--text-primary); }
+.ai-chat-avatar { color:var(--accent-primary); }
+
+/* A single hero canvas contains the full-width stars and the existing objects. */
+.hero { isolation:isolate; min-height:860px; padding-top:125px; }
+.hero > .scene-viewport { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+.hero > .scene-viewport .scene-art { mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 78%,transparent); }
+.hero > .scene-viewport .scene-pause,.hero > .scene-viewport .scene-mode { bottom:100px; right:8%; pointer-events:auto; }
+.hero-visual { height:480px; display:flex; flex-direction:column; justify-content:space-between; border:0; border-radius:0; background:none; pointer-events:none; z-index:1; }
+.hero-intro { text-transform:none; font:500 17px/1.5 Inter,"Segoe UI",sans-serif; letter-spacing:0; color:var(--text-secondary); margin-top:26px; }
+.hero h1 { font-size:clamp(64px,5.8vw,90px); }
+.hero h2 { margin:18px 0 14px; }
+.hero-statement { font-size:clamp(19px,1.8vw,25px); line-height:1.4; color:var(--text-primary); font-weight:500; letter-spacing:-.5px; margin-bottom:14px; }
+.hero-description { max-width:440px; font-size:14px; }
+.hero-content { background:radial-gradient(ellipse at 20% 45%,#080f1f55,transparent 75%); }
+.visual-caption,.visual-footer { font-size:11px; letter-spacing:.3px; color:var(--text-muted); text-transform:none; }
+.hero-bottom { z-index:1; }
+.section-label { text-transform:none; letter-spacing:1px; font-size:11px; }
+.hero > .scene-viewport .static-workspace {
+  background-image:radial-gradient(circle at 12% 18%,#bae6fd 0 1px,transparent 2px),radial-gradient(circle at 70% 33%,#c4b5fd 0 1px,transparent 2px),radial-gradient(circle at 38% 67%,#f8fafc 0 1px,transparent 2px);
+  background-size:191px 227px,307px 271px,367px 313px;
+}
+.hero > .scene-viewport .static-workspace svg,.hero > .scene-viewport .static-workspace span { position:relative; left:26%; }
+@media(max-width:700px) {
+  .hero { min-height:0; }
+  .hero h1 { font-size:clamp(64px,17vw,94px); }
+  .hero-visual { height:350px; }
+  .hero > .scene-viewport .scene-pause,.hero > .scene-viewport .scene-mode { bottom:114px; right:8%; }
+  .hero > .scene-viewport .static-workspace { justify-content:flex-end; padding-bottom:180px; }
+  .hero > .scene-viewport .static-workspace svg,.hero > .scene-viewport .static-workspace span { left:0; }
+}
 @media(min-width:1600px) {
   .navbar {
     padding-inline:calc((100vw - 1392px)/2)
@@ -1358,7 +1432,7 @@ section:not(.hero) {
     left:0;
     right:0;
     padding:20px 6%;
-    background:#0b1525;
+    background:var(--bg-secondary);
     border-bottom:1px solid var(--border)
   }
   .nav-links.nav-open {
