@@ -19,10 +19,9 @@ export default function Hero() {
       <SceneViewport kind="hero" label="A calm starfield surrounding a floating laptop, cloud and technology icons" heroRef={heroRef} visualRef={visualRef} pointerRef={pointerRef} />
       <div className="hero-content">
         <div className="hero-status"><span className="status-dot" /> Full-stack development · Backend · Cloud</div>
-        <p className="hero-intro">Hi, I’m</p>
-        <h1>Tebogo<br /><span>Moremi.</span></h1>
-        <h2>Software Developer<span>Full-Stack & Cloud Engineering</span></h2>
-        <p className="hero-statement">I build software that works<br />beyond the browser.</p>
+        <p className="hero-intro">Hi, I’m Tebogo Moremi.</p>
+        <h1>I build software<br />that works <span>beyond<br className="hero-title-break" /> the browser.</span></h1>
+        <p className="hero-role">Software Developer <span>Full-Stack & Cloud Engineering</span></p>
         <p className="hero-description">I enjoy turning ideas into working applications—building interfaces and APIs, connecting systems, and getting them running with Docker and AWS.</p>
         <div className="hero-tech-stack">{["React", "Angular", "Java", "C#", "SQL", "Docker", "AWS", "CI/CD"].map(skill => <span key={skill}>{skill}</span>)}</div>
         <div className="hero-buttons">
@@ -40,7 +39,7 @@ export default function Hero() {
         <div className="visual-caption"><span className="tiny-cross">+</span> A little code. A world of possibilities.</div>
         <div className="visual-footer">Frontend · Backend · Cloud</div>
       </div>
-      <div className="hero-bottom"><a href="#about">SCROLL TO EXPLORE <span>↓</span></a><span>BUILT WITH PURPOSE. ENGINEERED TO EVOLVE.</span></div>
+      <div className="hero-bottom"><a href="#about">SCROLL TO EXPLORE <span>↓</span></a><span>INTERFACES / APIS / CLOUD SYSTEMS</span></div>
     </section>
   );
 }

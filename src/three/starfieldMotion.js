@@ -22,6 +22,8 @@ export function stepStars(data, time, dt, cursor, width, height, interactive, co
       data.positions[offset + 1] += (y - data.positions[offset + 1]) * follow;
       // Lower contrast behind the copy; a gentle luminance trail lingers on exit.
       const textMask = !compact && x < 0 ? 0.55 : 1;
-      data.brightness[i] = (data.resting[i] + data.heat[i] * 0.28) * textMask;
+      // Only one star in seven twinkles; modulation stays within 12% of rest.
+      const twinkle = i % 7 === 0 ? 1 + Math.sin(time * 0.7 + i * 1.9) * 0.12 : 1;
+      data.brightness[i] = (data.resting[i] * twinkle + data.heat[i] * 0.28) * textMask;
     }
 }
