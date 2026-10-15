@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-const elements = { article: motion.article, div: motion.div, button: motion.button };
+const elements = { a: motion.a, article: motion.article, div: motion.div, button: motion.button };
 
 // Shared pointer treatment; keyboard focus receives the same border emphasis in CSS.
 export default function GlassCard({ as = "div", className = "", children, ...props }) {

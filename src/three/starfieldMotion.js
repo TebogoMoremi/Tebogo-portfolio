@@ -4,9 +4,9 @@ export function stepStars(data, time, dt, cursor, width, height, interactive, co
     for (let i = 0; i < data.count; i++) {
       const offset = i * 3;
       const layer = data.base[offset + 2];
-      const drift = Math.sin(time * (0.035 + layer * 0.012) + i * 1.7);
-      let x = data.base[offset] + drift * (0.002 + layer * 0.002);
-      let y = data.base[offset + 1] + Math.cos(time * 0.04 + i) * 0.003;
+      const drift = Math.sin(time * (0.12 + layer * 0.035) + i * 1.7);
+      let x = data.base[offset] + drift * (0.008 + layer * 0.004);
+      let y = data.base[offset + 1] + Math.cos(time * 0.14 + i) * 0.009;
       x += cursor.x * (layer + 1) * 0.004;
       y += cursor.y * (layer + 1) * 0.003;
       const dx = (x - cursor.x) * width / 2;

@@ -119,3 +119,11 @@ Browser URL policy still blocks rendered inspection. All requested viewport widt
 Quality review: recruiter information remains prominent; native disclosures and readable HTML preserve accessibility; deployment copy now distinguishes topology from live service availability. Backend, infrastructure and workflow files were not changed. No merge or manual deployment.
 
 Files: index.html; public/social-preview.png; src/App.jsx; src/components/{ContactDock,AIChat,About,ArchitectureExplorer,Hero,Projects,WhatsAppButton}.jsx; src/three/Starfield.jsx; src/index.css; this report. Branch: feature/portfolio-recruiter-redesign. Commit and push verification are provided in the final response.
+
+## Visible moving backgrounds and email cards — 15 October 2026
+
+Made non-hero section surfaces transparent so they no longer hide the shared ambient renderer. Raised particle brightness and size, added visible multi-axis drift, rotating edge rings/polyhedra, brighter bounded network connections and a gently moving project grid. Particle placement now follows viewport proportions (110 desktop / 40 mobile); floating geometry is limited to four desktop / two mobile objects. Contact retains a calmer particle treatment. Hero stars drift faster with a slightly larger travel range. Existing shared rendering, pause, hidden-page suspension, reduced-motion/static fallback and device pixel ratio caps remain.
+
+Included the requested full-card email link with encoded subject and recruiter draft, keyboard focus and corrected arrow glyphs; LinkedIn/GitHub cards also use semantic whole-card anchors. No automatic sending. Changes are confined to Contact, GlassCard, AmbientScene, starfieldMotion and CSS, plus this report. Earlier redesign features, verified content, metadata, chat, WhatsApp, backend and infrastructure remain intact.
+
+Build, lint, existing motion tests and whitespace checks were executed for this pass; see final response for results. Browser policy continues to prevent rendered visual verification, so visibility/motion implementation is source-validated but not visually confirmed at the requested breakpoints. Existing Three.js bundle warning remains. Prior report sections describe remaining live backend and canonical URL verification gaps. No merge or deployment.
