@@ -4,9 +4,9 @@ export function stepStars(data, time, dt, cursor, width, height, interactive, co
     for (let i = 0; i < data.count; i++) {
       const offset = i * 3;
       const layer = data.base[offset + 2];
-      const drift = Math.sin(time * (0.035 + layer * 0.012) + i * 1.7);
-      let x = data.base[offset] + drift * (0.002 + layer * 0.002);
-      let y = data.base[offset + 1] + Math.cos(time * 0.04 + i) * 0.003;
+      const drift = Math.sin(time * (0.12 + layer * 0.035) + i * 1.7);
+      let x = data.base[offset] + drift * (0.008 + layer * 0.004);
+      let y = data.base[offset + 1] + Math.cos(time * 0.14 + i) * 0.009;
       x += cursor.x * (layer + 1) * 0.004;
       y += cursor.y * (layer + 1) * 0.003;
       const dx = (x - cursor.x) * width / 2;
@@ -22,6 +22,8 @@ export function stepStars(data, time, dt, cursor, width, height, interactive, co
       data.positions[offset + 1] += (y - data.positions[offset + 1]) * follow;
       // Lower contrast behind the copy; a gentle luminance trail lingers on exit.
       const textMask = !compact && x < 0 ? 0.55 : 1;
-      data.brightness[i] = (data.resting[i] + data.heat[i] * 0.28) * textMask;
+      // Only one star in seven twinkles; modulation stays within 12% of rest.
+      const twinkle = i % 7 === 0 ? 1 + Math.sin(time * 0.7 + i * 1.9) * 0.12 : 1;
+      data.brightness[i] = (data.resting[i] * twinkle + data.heat[i] * 0.28) * textMask;
     }
 }

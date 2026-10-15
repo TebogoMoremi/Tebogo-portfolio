@@ -49,9 +49,10 @@ export default function Starfield({ compact, active, pointerRef }) {
       const layer = i < count * 0.7 ? 0 : i < count * 0.95 ? 1 : 2;
       base.set([random() * 2 - 1, random() * 2 - 1, layer], i * 3);
       positions.set([base[i * 3], base[i * 3 + 1], 0], i * 3);
-      palette[Math.floor(random() * palette.length)].toArray(colors, i * 3);
+      palette[Math.floor(Math.pow(random(), 1.7) * palette.length)].toArray(colors, i * 3);
       sizes[i] = [2, 3.2, 5][layer] + random() * 1.7;
-      resting[i] = [0.24, 0.4, 0.55][layer] + random() * 0.15;
+      // Keep the reading column calmer while preserving depth on the visual side.
+      resting[i] = ([0.24, 0.4, 0.55][layer] + random() * 0.15) * (base[i * 3] < -0.1 ? 0.72 : 1);
       brightness[i] = resting[i];
     }
     return { count, base, positions, colors, sizes, brightness, resting, heat };

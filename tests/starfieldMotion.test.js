@@ -32,3 +32,21 @@ test("ambient touch mode does not leave a cursor glow and reuses its arrays", ()
   assert.equal(mobile.positions, positions);
   assert.ok([...mobile.positions].every(Number.isFinite));
 });
+
+test("ambient twinkling remains slow and within a restrained brightness range", () => {
+  const stars = field(0.8);
+  let minimum = Infinity;
+  let maximum = -Infinity;
+  let previous;
+  for (let frame = 0; frame < 1200; frame++) {
+    stepStars(stars, frame / 60, 1 / 60, { x: 0, y: 0 }, 1000, 800, false, false);
+    const brightness = stars.brightness[0];
+    minimum = Math.min(minimum, brightness);
+    maximum = Math.max(maximum, brightness);
+    if (previous !== undefined) assert.ok(Math.abs(brightness - previous) < 0.001);
+    previous = brightness;
+  }
+  assert.ok(minimum >= 0.35 && maximum <= 0.45);
+  assert.ok(maximum - minimum > 0.08);
+  assert.equal(stars.heat[0], 0);
+});

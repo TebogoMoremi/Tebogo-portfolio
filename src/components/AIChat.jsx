@@ -14,23 +14,24 @@ const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 const SUGGESTED_QUESTIONS = [
-  "What are Tebogo's strongest skills?",
-  "What AWS experience does Tebogo have?",
-  "Which projects demonstrate Java?",
+  "What are Tebogo's strongest technical skills?",
+  "Tell me about his AWS experience.",
+  "What projects has he built?",
+  "What backend technologies does he use?",
 ];
 
-export default function AIChat() {
+export default function AIChat({ initiallyOpen = false }) {
   const reducedMotion = useReducedMotion();
   const toggleRef = useRef(null);
   const inputRef = useRef(null);
   const closeChat = () => { setIsOpen(false); toggleRef.current?.focus(); };
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(initiallyOpen);
 
   const [messages, setMessages] = useState([
     {
       role: "assistant",
       content:
-        "Hi! I'm Tebogo's portfolio assistant. Ask me about his skills, experience, projects, or DevOps and cloud work.",
+        "Hey there! I'm Tebogo's portfolio assistant. I can tell you about his development experience, technical skills, projects and cloud engineering work. What would you like to know?",
     },
   ]);
 
@@ -308,7 +309,8 @@ export default function AIChat() {
               {/* Typing indicator */}
               {isLoading && (
                 <div className="ai-message ai-message-assistant ai-loading-message">
-                  <div className="ai-typing">
+                  <span className="sr-only">Preparing an answer</span>
+                  <div className="ai-typing" aria-hidden="true">
                     <span />
                     <span />
                     <span />
