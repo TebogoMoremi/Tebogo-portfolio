@@ -1,3 +1,4 @@
+import WhatsAppButton from "./WhatsAppButton";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -171,7 +172,7 @@ export default function AIChat() {
 
   return (
     <>
-      {/* Floating chatbot button */}
+      <div className="floating-actions">
       <motion.button
         ref={toggleRef}
         className="ai-chat-toggle"
@@ -189,6 +190,8 @@ export default function AIChat() {
         </span>
       </motion.button>
 
+      {!isOpen && <WhatsAppButton floating />}
+      </div>
       <AnimatePresence>
         {isOpen && (
           <motion.div

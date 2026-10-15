@@ -87,3 +87,13 @@ Added: src/chat.css (existing chat styling extracted); src/components/Architectu
 Verify the deployed AI endpoint before release, supply real project URLs when ready, profile on a physical low-end phone, and run forced context-loss/reduced-motion checks. Consider further renderer bundle optimization and an upstream Fiber/Three compatibility update to address the Clock deprecation. No merge, push or deployment was performed.
 
 Work is saved on `feature/portfolio-recruiter-redesign`. See the final chat response or `git log` for the commit hash.
+
+## WhatsApp and contact completion — 15 October 2026
+
+Added reusable WhatsAppButton with the supplied +27782708321 number and exact encoded recruiter message. Both links use official wa.me click-to-chat, open a new tab with noopener/noreferrer and never send automatically. A green circular action offers keyboard focus and a hover/focus tooltip. It shares a vertical layout with Ask Tebogo AI, hides while the assistant is open, and respects mobile safe areas. Footer spacing reserves room for floating controls; mobile navigation hides the floating dock.
+
+Contact now has four shared glass cards for the existing email, LinkedIn, GitHub and new WhatsApp link, with clear action text. Hero actions read Explore My Work, Download CV and Let's Talk. The existing tested starfield and shared section atmospheres were reviewed and retained; no additional canvases, particle work or dependencies were added. No backend or infrastructure files changed.
+
+Validation: production build passed; lint passed; all three existing motion tests passed. Executed assertions verified the WhatsApp destination and exact message round-trip, new-tab protections, and local CV PDF signature. Diff reviewed for unrelated changes and credentials; no new secrets found. Contact destinations match the existing source. Browser policy still prevents rendered checks, including the requested 320/375/425/768/1024/1440/1920 widths, WhatsApp handoff, console inspection and live AI interaction; these are not claimed as tested. Existing bundle-size warnings remain (main 524.44 kB and lazy renderer 924.12 kB minified).
+
+Changed files: src/components/{WhatsAppButton,AIChat,Contact,Hero}.jsx, src/index.css and this report. Existing branch: feature/portfolio-recruiter-redesign. GitHub Actions configuration runs on main pushes and PRs targeting main, not ordinary feature-branch pushes. No manual AWS deployment or merge is requested or performed. Push and remote verification results are reported in the final response.

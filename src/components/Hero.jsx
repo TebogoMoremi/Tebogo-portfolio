@@ -25,11 +25,11 @@ export default function Hero() {
         <p className="hero-description">I enjoy turning ideas into working applications—building interfaces and APIs, connecting systems, and getting them running with Docker and AWS.</p>
         <div className="hero-tech-stack">{["React", "Angular", "Java", "C#", "SQL", "Docker", "AWS", "CI/CD"].map(skill => <span key={skill}>{skill}</span>)}</div>
         <div className="hero-buttons">
-          <a href="#projects" className="primary-button">View Projects <FaArrowRight /></a>
+          <a href="#projects" className="primary-button">Explore My Work <FaArrowRight /></a>
           <a href="/Tebogo-Moremi-CV.pdf" className="secondary-button" download><FaDownload /> Download CV</a>
         </div>
         <div className="hero-social-row">
-          <a href="#contact" className="text-link">Contact me <span>↗</span></a><span className="social-divider" />
+          <a href="#contact" className="text-link">Let's Talk <span>↗</span></a><span className="social-divider" />
           <a href="https://github.com/TebogoMoremi" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><FaGithub /></a>
           <a href="https://www.linkedin.com/in/tebogo-herrold-moremi-782746157/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedin /></a>
         </div>
